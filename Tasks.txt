@@ -1,0 +1,29 @@
+1. Skeleton (input, output)
+2. Ütközési esemény érzékelése
+3. Döntéshozatal
+4. Beavatkozás
+5. Konstans sebességű objektum
+
+- Objektumállapotok
+- robosztusság
+- konfigurálhatóság
+- komfort
+
+1. hét - Skeleton (i/o): - ros node: (kb. 3 óra/node), interface-el együtt
+		- behavior planner - Edina
+		- plan long emergency - Anna
+		- control long emergency - Zoli
+	- node feladata
+
+- Ütközési esemény érzékelése (mennyi idő múlva következik be?): kb. 4 óra - Timót
+- Döntéshozatal (lassulás, fékezés): kb. 3 óra - Dani
+- Beavatkozás (fékezés módja): kb. 1. óra - Szabolcs
+- Konstans sebességű objektum (erre működjön az eddigi rendszer, mozgó objektum hozzáadása): kb. 2 óra
+
+	Objektumállapotok:
+		- lassuló objektum: kb. 4 óra
+		- tolató objektum: kb. 2 óra
+
+	Robosztusság (mi van ha kimarad egy ciklus?) - András
+
+	Konfigurálhatóság (3 behavior, különböző értékek) - András
