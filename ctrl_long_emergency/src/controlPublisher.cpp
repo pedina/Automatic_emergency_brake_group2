@@ -4,7 +4,7 @@
 ctrl_long_emergency::ControlPublisher::ControlPublisher() : Node("control_publisher")
 {
     // declare parameters
-    this->declare_parameter<std::string>("topic_name", "ctrl_cmd");
+    this->declare_parameter<std::string>("topic_name", "/control/command/control_cmd");
     this->declare_parameter<uint8_t>("publish_rate", 5);
     this->declare_parameter<bool>("debug_enabled", false);
 
