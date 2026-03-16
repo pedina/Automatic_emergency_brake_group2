@@ -9,20 +9,20 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(autoware_control_msgs REQUIRED)
+find_package(crp_msgs REQUIRED)
 
 
 include_directories(include)
 
-add_executable(control_publisher src/controlPublisher.cpp)
-ament_target_dependencies(control_publisher rclcpp autoware_control_msgs)
+add_executable(ctrl_long_emergency src/ctrlLongEmergency.cpp)
+ament_target_dependencies(ctrl_long_emergency rclcpp autoware_control_msgs crp_msgs)
 
 install(TARGETS
-  control_publisher
+  ctrl_long_emergency
   DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY
-  config
   launch
   DESTINATION share/${PROJECT_NAME}
 )

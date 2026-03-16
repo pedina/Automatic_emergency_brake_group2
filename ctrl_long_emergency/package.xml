@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ctrl_long_emergency</name>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <description>Control long emergency</description>
   <maintainer email="fulopzoli95@gmail.com">Zoli</maintainer>
   <license>Apache License 2.0</license>
@@ -11,6 +11,7 @@
 
   <depend>rclcpp</depend>
   <depend>autoware_control_msgs</depend>
+  <depend>crp_msgs</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

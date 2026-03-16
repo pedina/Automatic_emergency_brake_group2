@@ -1,4 +1,0 @@
-/control_publisher:
-  ros__parameters:
-    topic_name: "/control/command/control_cmd"
-    publish_rate: 10 # hz
