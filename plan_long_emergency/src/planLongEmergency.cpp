@@ -61,6 +61,14 @@ private:
 
     if (!last_target_->relevant_objects.empty()) {
         
+        uint8_t mode = 1;
+            if (current_behavior_) {
+                mode = current_behavior_->deceleration_mode.data;
+                if (mode_limits_.find(mode) == mode_limits_.end()) {
+                    mode = 1;
+                }
+            }
+
         uint8_t mode = (current_behavior_) ? current_behavior_->deceleration_mode.data : 1; 
         auto trajectory = generateTrajectory(mode_limits_[mode]);
         pub_trajectory_->publish(trajectory);
