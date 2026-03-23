@@ -16,22 +16,22 @@ find_package(crp_msgs REQUIRED)
 find_package(autoware_planning_msgs REQUIRED)
 find_package(autoware_perception_msgs REQUIRED)
 
-add_executable(plan_long_emergency_node src/plan_long_emergency_node.cpp)
+add_executable(plan_long_emergency_node src/planLongEmergency.cpp)
 
 target_include_directories(plan_long_emergency_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(plan_long_emergency_node
-  rclcpp::rclcpp
-  std_msgs::std_msgs
-  geometry_msgs::geometry_msgs
-  nav_msgs::nav_msgs
-  sensor_msgs::sensor_msgs
-  crp_msgs::crp_msgs
-  autoware_planning_msgs::autoware_planning_msgs
-  autoware_perception_msgs::autoware_perception_msgs
+ament_target_dependencies(plan_long_emergency_node
+  rclcpp
+  std_msgs
+  geometry_msgs
+  nav_msgs
+  sensor_msgs
+  crp_msgs
+  autoware_planning_msgs
+  autoware_perception_msgs
 )
 
 install(TARGETS

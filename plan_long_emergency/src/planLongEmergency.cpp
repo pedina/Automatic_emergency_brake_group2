@@ -115,7 +115,7 @@ private:
             curr_s += curr_v * dt;
 
             p.longitudinal_velocity_mps = static_cast<float>(curr_v);
-            p.acceleration_fps2 = static_cast<float>(a_req);
+            p.acceleration_mps2 = static_cast<float>(a_req);
             
             p.pose.position.x = ego_x + curr_s; 
             p.pose.position.y = ego_y;
