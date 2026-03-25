@@ -27,6 +27,14 @@ private:
 
     crp_msgs::msg::Ego::SharedPtr last_ego;
     crp_msgs::msg::Scenario::SharedPtr last_scenario;
+    tier4_planning_msgs::msg::Scenario out_scenario;
+    crp_msgs::msg::TargetSpace out_targetSpace;
+    bool debugEnabled;
+
+    std::vector<autoware_perception_msgs::msg::PredictedObject> relevant_obstacles;
+    std::vector<autoware_perception_msgs::msg::PredictedObject> relevant_objects;
+    std::vector<autoware_perception_msgs::msg::PredictedObject> obstacles;
+    std::vector<autoware_perception_msgs::msg::PredictedObject> objects;
 
 };
 
