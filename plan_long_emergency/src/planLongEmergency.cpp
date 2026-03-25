@@ -69,7 +69,7 @@ private:
                 }
             }
 
-        uint8_t mode = (current_behavior_) ? current_behavior_->deceleration_mode.data : 1; 
+        mode = (current_behavior_) ? current_behavior_->deceleration_mode.data : 1; 
         auto trajectory = generateTrajectory(mode_limits_[mode]);
         pub_trajectory_->publish(trajectory);
         
