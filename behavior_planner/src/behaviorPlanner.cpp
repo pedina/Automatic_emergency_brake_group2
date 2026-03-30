@@ -40,7 +40,7 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
     );
 
     timer_pub = this->create_wall_timer(
-        std::chrono::milliseconds(20),
+        std::chrono::milliseconds(200),
         std::bind(&BehaviorPlanner::timerCallback, this)
     );
 
@@ -69,7 +69,9 @@ void BehaviorPlanner::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg) {
 
 void BehaviorPlanner::timerCallback() {
     if (last_ego && last_scenario) {
-        double x_now = (last_ego) ? last_ego->pose.pose.position.x : 0;
+        double ego_x = last_ego->pose.pose.position.x;
+        double ego_y = last_ego->pose.pose.position.y;
+
         obstacles  = last_scenario->local_obstacles.objects;
         objects = last_scenario->local_moving_objects.objects;
         relevant_obstacles.clear();
@@ -78,29 +80,42 @@ void BehaviorPlanner::timerCallback() {
         out_targetSpace.free_space = last_scenario->free_space;
         out_targetSpace.header.stamp = this->get_clock()->now();
 
-        RCLCPP_INFO(this->get_logger(), "Obstacle count: %ld", obstacles.size());
         for (long unsigned int i = 0; i < obstacles.size(); i++)
         {
             auto current_obstacle = obstacles[i];
             double obstacle_x = current_obstacle.kinematics.initial_pose_with_covariance.pose.position.x;
+            double obstacle_y = current_obstacle.kinematics.initial_pose_with_covariance.pose.position.y;
 
-            if ((obstacle_x >= x_now) && (obstacle_x-x_now <= 100)) {
+            double dx = ego_x - obstacle_x;
+            double dy = ego_y - obstacle_y;
+
+            double distance = dx*dx + dy*dy;
+            double limit = (double) 100 * 100;
+            
+
+            if ((obstacle_x >= ego_x) && (distance <= limit)) {
                 relevant_obstacles.push_back(current_obstacle);
-                RCLCPP_INFO(this->get_logger(), "new obstacle added to relevants, distance: %f", obstacle_x-x_now);
-                RCLCPP_INFO(this->get_logger(), "It's x is: %f and ego's is: %f", obstacle_x, x_now);
+                RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %f", obstacle_x, obstacle_y, distance);
+                RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f", ego_x, ego_y);
             }
         }
 
-        RCLCPP_INFO(this->get_logger(), "Object count: %ld", objects.size());
         for (long unsigned int i = 0; i < objects.size(); i++)
         {
             auto current_object = objects[i];
             double object_x = current_object.kinematics.initial_pose_with_covariance.pose.position.x;
+            double object_y = current_object.kinematics.initial_pose_with_covariance.pose.position.y;
 
-            if ((object_x >= x_now) && (object_x-x_now <= 100)) {
+            double dx = ego_x - object_x;
+            double dy = ego_y - object_y;
+
+            double distance = dx*dx + dy*dy;
+            double limit = (double) 100 * 100;
+
+            if ((object_x >= ego_x) && (distance <= limit)) {
                 relevant_objects.push_back(current_object);
-                RCLCPP_INFO(this->get_logger(), "new object added to relevants, distance: %f", object_x-x_now);
-                RCLCPP_INFO(this->get_logger(), "It's x is: %f and ego's is: %f", object_x, x_now);
+                RCLCPP_INFO(this->get_logger(), "New object,   x: %f y: %f distance: %f", object_x, object_y, distance);
+                RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f", ego_x, ego_y);
             }
         }
     
