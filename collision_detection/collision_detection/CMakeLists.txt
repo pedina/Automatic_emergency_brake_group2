@@ -9,7 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(crp_msgs REQUIRED)
 find_package(autoware_planning_msgs REQUIRED)
-# Ha később ROS 2 Node-ot is írsz ide, a find_package(rclcpp REQUIRED) is kelleni fog!
+find_package(rclcpp REQUIRED)
 
 # 2. A mag-logika könyvtárrá (library) alakítása
 add_library(collision_detection_lib SHARED
