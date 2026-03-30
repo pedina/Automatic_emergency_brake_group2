@@ -7,9 +7,11 @@ endif()
 
 # 1. Függőségek megkeresése
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
 find_package(crp_msgs REQUIRED)
 find_package(autoware_planning_msgs REQUIRED)
-find_package(rclcpp REQUIRED)
+find_package(autoware_perception_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 # 2. A mag-logika könyvtárrá (library) alakítása
 add_library(collision_detection_lib SHARED
