@@ -40,7 +40,7 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
     );
 
     timer_pub = this->create_wall_timer(
-        std::chrono::milliseconds(200),
+        std::chrono::milliseconds(20),
         std::bind(&BehaviorPlanner::timerCallback, this)
     );
 
