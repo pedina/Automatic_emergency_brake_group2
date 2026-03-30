@@ -24,6 +24,8 @@ target_include_directories(collision_detection_lib PUBLIC
 ament_target_dependencies(collision_detection_lib
         crp_msgs
         autoware_planning_msgs
+        autoware_perception_msgs
+        geometry_msgs
 )
 
 # 3. A teszt futtatható állomány létrehozása
