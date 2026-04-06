@@ -1,0 +1,499 @@
+[0.000000] (-) TimerEvent: {}
+[0.000805] (-) JobUnselected: {'identifier': 'basic_concepts'}
+[0.001043] (-) JobUnselected: {'identifier': 'velocity_estimator'}
+[0.001160] (behavior_planner) JobQueued: {'identifier': 'behavior_planner', 'dependencies': OrderedDict()}
+[0.001254] (behavior_planner) JobStarted: {'identifier': 'behavior_planner'}
+[0.098210] (-) TimerEvent: {}
+[0.106506] (behavior_planner) JobProgress: {'identifier': 'behavior_planner', 'progress': 'cmake'}
+[0.113173] (behavior_planner) Command: {'cmd': ['/usr/bin/cmake', '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/behavior_planner', '-DCMAKE_INSTALL_PREFIX=/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner'], 'cwd': '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'edina'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/edina/ros2_ws/install/tier4_vehicle_msgs/lib:/home/edina/ros2_ws/install/tier4_v2x_msgs/lib:/home/edina/ros2_ws/install/tier4_api_msgs/lib:/home/edina/ros2_ws/install/tier4_system_msgs/lib:/home/edina/ros2_ws/install/tier4_simulation_msgs/lib:/home/edina/ros2_ws/install/tier4_rtc_msgs/lib:/home/edina/ros2_ws/install/crp_msgs/lib:/home/edina/ros2_ws/install/tier4_planning_msgs/lib:/home/edina/ros2_ws/install/tier4_perception_msgs/lib:/home/edina/ros2_ws/install/tier4_metric_msgs/lib:/home/edina/ros2_ws/install/tier4_map_msgs/lib:/home/edina/ros2_ws/install/tier4_localization_msgs/lib:/home/edina/ros2_ws/install/tier4_hmi_msgs/lib:/home/edina/ros2_ws/install/tier4_external_api_msgs/lib:/home/edina/ros2_ws/install/tier4_debug_msgs/lib:/home/edina/ros2_ws/install/tier4_control_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/edina'), ('OLDPWD', '/home/edina/ros2_ws/src'), ('ROS_PYTHON_VERSION', '3'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('COLCON_PREFIX_PATH', '/home/edina/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'edina'), ('NAME', 'LAPTOP-ETSLVS59'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files/Zulu/zulu-21/bin/:/mnt/c/Program Files/Python312/Scripts/:/mnt/c/Program Files/Python312/:/mnt/c/Program Files/Microsoft/jdk-11.0.16.101-hotspot/bin:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Git/cmd:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility:/mnt/c/Program Files (x86)/Vector CANdb++ 3.1/Exec32:/mnt/c/Program Files/Java/jdk-21/bin:/mnt/c/xampp/php:/mnt/c/Program Files/Tailscale/:/mnt/c/Users/HP/AppData/Local/Programs/Python/Python311/Scripts/:/mnt/c/Users/HP/AppData/Local/Programs/Python/Python311/:/mnt/c/Users/HP/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/HP/.dotnet/tools:/mnt/c/Users/HP/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/HP/AppData/Roaming/npm:/mnt/c/Users/HP/AppData/Local/GitHubDesktop/bin:/snap/bin'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/home/edina/ros2_ws/install/visualizer:/home/edina/ros2_ws/install/velocity_estimator:/home/edina/ros2_ws/install/tier4_auto_msgs_converter:/home/edina/ros2_ws/install/tier4_vehicle_msgs:/home/edina/ros2_ws/install/tier4_v2x_msgs:/home/edina/ros2_ws/install/tier4_api_msgs:/home/edina/ros2_ws/install/tier4_system_msgs:/home/edina/ros2_ws/install/tier4_simulation_msgs:/home/edina/ros2_ws/install/tier4_rtc_msgs:/home/edina/ros2_ws/install/simulator:/home/edina/ros2_ws/install/plan_long_emergency:/home/edina/ros2_ws/install/crp_msgs:/home/edina/ros2_ws/install/tier4_planning_msgs:/home/edina/ros2_ws/install/tier4_perception_msgs:/home/edina/ros2_ws/install/tier4_metric_msgs:/home/edina/ros2_ws/install/tier4_map_msgs:/home/edina/ros2_ws/install/tier4_localization_msgs:/home/edina/ros2_ws/install/tier4_hmi_msgs:/home/edina/ros2_ws/install/tier4_external_api_msgs:/home/edina/ros2_ws/install/tier4_debug_msgs:/home/edina/ros2_ws/install/tier4_control_msgs:/home/edina/ros2_ws/install/basic_concepts:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/edina/ros2_ws/install/tier4_vehicle_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_v2x_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_api_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_system_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_simulation_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_rtc_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/crp_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_planning_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_perception_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_metric_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_map_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_localization_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_hmi_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_external_api_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_debug_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_control_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('HOSTTYPE', 'x86_64'), ('CMAKE_PREFIX_PATH', '/home/edina/ros2_ws/install/visualizer:/home/edina/ros2_ws/install/velocity_estimator:/home/edina/ros2_ws/install/tier4_auto_msgs_converter:/home/edina/ros2_ws/install/tier4_vehicle_msgs:/home/edina/ros2_ws/install/tier4_v2x_msgs:/home/edina/ros2_ws/install/tier4_api_msgs:/home/edina/ros2_ws/install/tier4_system_msgs:/home/edina/ros2_ws/install/tier4_simulation_msgs:/home/edina/ros2_ws/install/tier4_rtc_msgs:/home/edina/ros2_ws/install/simulator:/home/edina/ros2_ws/install/plan_long_emergency:/home/edina/ros2_ws/install/crp_msgs:/home/edina/ros2_ws/install/tier4_planning_msgs:/home/edina/ros2_ws/install/tier4_perception_msgs:/home/edina/ros2_ws/install/tier4_metric_msgs:/home/edina/ros2_ws/install/tier4_map_msgs:/home/edina/ros2_ws/install/tier4_localization_msgs:/home/edina/ros2_ws/install/tier4_hmi_msgs:/home/edina/ros2_ws/install/tier4_external_api_msgs:/home/edina/ros2_ws/install/tier4_debug_msgs:/home/edina/ros2_ws/install/tier4_control_msgs:/home/edina/ros2_ws/install/basic_concepts:/opt/ros/humble'), ('WSLENV', '')]), 'shell': False}
+[0.199390] (-) TimerEvent: {}
+[0.300976] (-) TimerEvent: {}
+[0.402010] (-) TimerEvent: {}
+[0.503618] (-) TimerEvent: {}
+[0.605309] (-) TimerEvent: {}
+[0.706842] (-) TimerEvent: {}
+[0.807838] (-) TimerEvent: {}
+[0.809097] (behavior_planner) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.908856] (-) TimerEvent: {}
+[1.010263] (-) TimerEvent: {}
+[1.111080] (-) TimerEvent: {}
+[1.212082] (-) TimerEvent: {}
+[1.306977] (behavior_planner) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[1.313145] (-) TimerEvent: {}
+[1.415091] (-) TimerEvent: {}
+[1.457368] (behavior_planner) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[1.515650] (-) TimerEvent: {}
+[1.617615] (-) TimerEvent: {}
+[1.718613] (-) TimerEvent: {}
+[1.819615] (-) TimerEvent: {}
+[1.920526] (-) TimerEvent: {}
+[2.021550] (-) TimerEvent: {}
+[2.123114] (-) TimerEvent: {}
+[2.224736] (-) TimerEvent: {}
+[2.326083] (-) TimerEvent: {}
+[2.403566] (behavior_planner) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[2.424169] (behavior_planner) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[2.426702] (behavior_planner) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[2.427233] (-) TimerEvent: {}
+[2.429041] (behavior_planner) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[2.450742] (behavior_planner) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[2.528433] (-) TimerEvent: {}
+[2.630377] (-) TimerEvent: {}
+[2.731304] (-) TimerEvent: {}
+[2.832731] (-) TimerEvent: {}
+[2.934494] (-) TimerEvent: {}
+[3.035766] (-) TimerEvent: {}
+[3.136781] (-) TimerEvent: {}
+[3.237785] (-) TimerEvent: {}
+[3.338819] (-) TimerEvent: {}
+[3.416778] (behavior_planner) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[3.436837] (behavior_planner) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[3.438231] (behavior_planner) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[3.439747] (behavior_planner) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[3.441122] (-) TimerEvent: {}
+[3.523853] (behavior_planner) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[3.541765] (-) TimerEvent: {}
+[3.643749] (-) TimerEvent: {}
+[3.744906] (-) TimerEvent: {}
+[3.845888] (-) TimerEvent: {}
+[3.946880] (-) TimerEvent: {}
+[4.048450] (-) TimerEvent: {}
+[4.149473] (-) TimerEvent: {}
+[4.250518] (-) TimerEvent: {}
+[4.351472] (-) TimerEvent: {}
+[4.452645] (-) TimerEvent: {}
+[4.513179] (behavior_planner) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[4.553665] (-) TimerEvent: {}
+[4.654680] (-) TimerEvent: {}
+[4.755660] (-) TimerEvent: {}
+[4.856744] (-) TimerEvent: {}
+[4.958748] (-) TimerEvent: {}
+[5.060249] (-) TimerEvent: {}
+[5.161965] (-) TimerEvent: {}
+[5.263961] (-) TimerEvent: {}
+[5.364837] (-) TimerEvent: {}
+[5.466463] (-) TimerEvent: {}
+[5.567469] (-) TimerEvent: {}
+[5.668478] (-) TimerEvent: {}
+[5.718348] (behavior_planner) StdoutLine: {'line': b'-- Found rclcpp: 16.0.17 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[5.768654] (-) TimerEvent: {}
+[5.869533] (-) TimerEvent: {}
+[5.971419] (-) TimerEvent: {}
+[6.072988] (-) TimerEvent: {}
+[6.174956] (-) TimerEvent: {}
+[6.275958] (-) TimerEvent: {}
+[6.377571] (-) TimerEvent: {}
+[6.478570] (-) TimerEvent: {}
+[6.483778] (behavior_planner) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[6.579590] (-) TimerEvent: {}
+[6.599667] (behavior_planner) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[6.680584] (-) TimerEvent: {}
+[6.734279] (behavior_planner) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[6.781593] (-) TimerEvent: {}
+[6.882627] (-) TimerEvent: {}
+[6.889530] (behavior_planner) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[6.983612] (-) TimerEvent: {}
+[7.084619] (-) TimerEvent: {}
+[7.104315] (behavior_planner) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[7.185673] (-) TimerEvent: {}
+[7.287888] (-) TimerEvent: {}
+[7.389669] (-) TimerEvent: {}
+[7.490739] (-) TimerEvent: {}
+[7.591746] (-) TimerEvent: {}
+[7.693306] (-) TimerEvent: {}
+[7.794313] (-) TimerEvent: {}
+[7.819921] (behavior_planner) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[7.882734] (behavior_planner) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[7.895270] (-) TimerEvent: {}
+[7.996842] (-) TimerEvent: {}
+[8.097681] (-) TimerEvent: {}
+[8.199134] (-) TimerEvent: {}
+[8.300142] (-) TimerEvent: {}
+[8.401908] (-) TimerEvent: {}
+[8.503511] (-) TimerEvent: {}
+[8.604532] (-) TimerEvent: {}
+[8.705541] (-) TimerEvent: {}
+[8.807064] (-) TimerEvent: {}
+[8.908065] (-) TimerEvent: {}
+[9.009208] (-) TimerEvent: {}
+[9.110214] (-) TimerEvent: {}
+[9.211216] (-) TimerEvent: {}
+[9.312221] (-) TimerEvent: {}
+[9.413948] (-) TimerEvent: {}
+[9.514955] (-) TimerEvent: {}
+[9.549259] (behavior_planner) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[9.616002] (-) TimerEvent: {}
+[9.717971] (-) TimerEvent: {}
+[9.818996] (-) TimerEvent: {}
+[9.919980] (-) TimerEvent: {}
+[10.018161] (behavior_planner) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[10.020974] (-) TimerEvent: {}
+[10.122693] (-) TimerEvent: {}
+[10.223696] (-) TimerEvent: {}
+[10.324679] (-) TimerEvent: {}
+[10.425721] (-) TimerEvent: {}
+[10.527035] (-) TimerEvent: {}
+[10.628030] (-) TimerEvent: {}
+[10.729040] (-) TimerEvent: {}
+[10.826066] (behavior_planner) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[10.830039] (-) TimerEvent: {}
+[10.932083] (-) TimerEvent: {}
+[10.960600] (behavior_planner) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[11.033558] (-) TimerEvent: {}
+[11.135226] (-) TimerEvent: {}
+[11.236914] (-) TimerEvent: {}
+[11.337925] (-) TimerEvent: {}
+[11.438992] (-) TimerEvent: {}
+[11.540602] (-) TimerEvent: {}
+[11.641601] (-) TimerEvent: {}
+[11.723882] (behavior_planner) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[11.727584] (behavior_planner) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[11.742625] (-) TimerEvent: {}
+[11.844245] (-) TimerEvent: {}
+[11.945201] (-) TimerEvent: {}
+[12.046861] (-) TimerEvent: {}
+[12.147847] (-) TimerEvent: {}
+[12.248838] (-) TimerEvent: {}
+[12.349840] (-) TimerEvent: {}
+[12.450731] (-) TimerEvent: {}
+[12.551737] (-) TimerEvent: {}
+[12.653280] (-) TimerEvent: {}
+[12.682110] (behavior_planner) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[12.686929] (behavior_planner) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[12.754318] (-) TimerEvent: {}
+[12.855319] (-) TimerEvent: {}
+[12.956323] (-) TimerEvent: {}
+[13.057321] (-) TimerEvent: {}
+[13.092833] (behavior_planner) StdoutLine: {'line': b'-- Found crp_msgs: 0.0.0 (/home/edina/ros2_ws/install/crp_msgs/share/crp_msgs/cmake)\n'}
+[13.158321] (-) TimerEvent: {}
+[13.259328] (-) TimerEvent: {}
+[13.360887] (-) TimerEvent: {}
+[13.462288] (-) TimerEvent: {}
+[13.563797] (-) TimerEvent: {}
+[13.665807] (-) TimerEvent: {}
+[13.766810] (-) TimerEvent: {}
+[13.867812] (-) TimerEvent: {}
+[13.968823] (-) TimerEvent: {}
+[14.069828] (-) TimerEvent: {}
+[14.094612] (behavior_planner) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[14.170793] (-) TimerEvent: {}
+[14.271798] (-) TimerEvent: {}
+[14.372676] (-) TimerEvent: {}
+[14.474085] (-) TimerEvent: {}
+[14.575228] (-) TimerEvent: {}
+[14.677112] (-) TimerEvent: {}
+[14.778847] (-) TimerEvent: {}
+[14.870488] (behavior_planner) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[14.870889] (behavior_planner) StdoutLine: {'line': b'-- Configured cppcheck include dirs: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/behavior_planner/include\n'}
+[14.871106] (behavior_planner) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[14.879845] (-) TimerEvent: {}
+[14.887719] (behavior_planner) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[14.910573] (behavior_planner) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[14.910934] (behavior_planner) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[14.925535] (behavior_planner) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[14.980442] (-) TimerEvent: {}
+[14.982638] (behavior_planner) StdoutLine: {'line': b'-- Configuring done\n'}
+[15.081439] (-) TimerEvent: {}
+[15.174960] (behavior_planner) StdoutLine: {'line': b'-- Generating done\n'}
+[15.181634] (-) TimerEvent: {}
+[15.283617] (-) TimerEvent: {}
+[15.329257] (behavior_planner) StdoutLine: {'line': b'-- Build files have been written to: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner\n'}
+[15.350640] (behavior_planner) CommandEnded: {'returncode': 0}
+[15.351660] (behavior_planner) JobProgress: {'identifier': 'behavior_planner', 'progress': 'build'}
+[15.353463] (behavior_planner) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner', '--', '-j8', '-l8'], 'cwd': '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'edina'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/edina/ros2_ws/install/tier4_vehicle_msgs/lib:/home/edina/ros2_ws/install/tier4_v2x_msgs/lib:/home/edina/ros2_ws/install/tier4_api_msgs/lib:/home/edina/ros2_ws/install/tier4_system_msgs/lib:/home/edina/ros2_ws/install/tier4_simulation_msgs/lib:/home/edina/ros2_ws/install/tier4_rtc_msgs/lib:/home/edina/ros2_ws/install/crp_msgs/lib:/home/edina/ros2_ws/install/tier4_planning_msgs/lib:/home/edina/ros2_ws/install/tier4_perception_msgs/lib:/home/edina/ros2_ws/install/tier4_metric_msgs/lib:/home/edina/ros2_ws/install/tier4_map_msgs/lib:/home/edina/ros2_ws/install/tier4_localization_msgs/lib:/home/edina/ros2_ws/install/tier4_hmi_msgs/lib:/home/edina/ros2_ws/install/tier4_external_api_msgs/lib:/home/edina/ros2_ws/install/tier4_debug_msgs/lib:/home/edina/ros2_ws/install/tier4_control_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/edina'), ('OLDPWD', '/home/edina/ros2_ws/src'), ('ROS_PYTHON_VERSION', '3'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('COLCON_PREFIX_PATH', '/home/edina/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'edina'), ('NAME', 'LAPTOP-ETSLVS59'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files/Zulu/zulu-21/bin/:/mnt/c/Program Files/Python312/Scripts/:/mnt/c/Program Files/Python312/:/mnt/c/Program Files/Microsoft/jdk-11.0.16.101-hotspot/bin:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Git/cmd:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility:/mnt/c/Program Files (x86)/Vector CANdb++ 3.1/Exec32:/mnt/c/Program Files/Java/jdk-21/bin:/mnt/c/xampp/php:/mnt/c/Program Files/Tailscale/:/mnt/c/Users/HP/AppData/Local/Programs/Python/Python311/Scripts/:/mnt/c/Users/HP/AppData/Local/Programs/Python/Python311/:/mnt/c/Users/HP/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/HP/.dotnet/tools:/mnt/c/Users/HP/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/HP/AppData/Roaming/npm:/mnt/c/Users/HP/AppData/Local/GitHubDesktop/bin:/snap/bin'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/home/edina/ros2_ws/install/visualizer:/home/edina/ros2_ws/install/velocity_estimator:/home/edina/ros2_ws/install/tier4_auto_msgs_converter:/home/edina/ros2_ws/install/tier4_vehicle_msgs:/home/edina/ros2_ws/install/tier4_v2x_msgs:/home/edina/ros2_ws/install/tier4_api_msgs:/home/edina/ros2_ws/install/tier4_system_msgs:/home/edina/ros2_ws/install/tier4_simulation_msgs:/home/edina/ros2_ws/install/tier4_rtc_msgs:/home/edina/ros2_ws/install/simulator:/home/edina/ros2_ws/install/plan_long_emergency:/home/edina/ros2_ws/install/crp_msgs:/home/edina/ros2_ws/install/tier4_planning_msgs:/home/edina/ros2_ws/install/tier4_perception_msgs:/home/edina/ros2_ws/install/tier4_metric_msgs:/home/edina/ros2_ws/install/tier4_map_msgs:/home/edina/ros2_ws/install/tier4_localization_msgs:/home/edina/ros2_ws/install/tier4_hmi_msgs:/home/edina/ros2_ws/install/tier4_external_api_msgs:/home/edina/ros2_ws/install/tier4_debug_msgs:/home/edina/ros2_ws/install/tier4_control_msgs:/home/edina/ros2_ws/install/basic_concepts:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/edina/ros2_ws/install/tier4_vehicle_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_v2x_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_api_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_system_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_simulation_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_rtc_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/crp_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_planning_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_perception_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_metric_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_map_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_localization_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_hmi_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_external_api_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_debug_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_control_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('HOSTTYPE', 'x86_64'), ('CMAKE_PREFIX_PATH', '/home/edina/ros2_ws/install/visualizer:/home/edina/ros2_ws/install/velocity_estimator:/home/edina/ros2_ws/install/tier4_auto_msgs_converter:/home/edina/ros2_ws/install/tier4_vehicle_msgs:/home/edina/ros2_ws/install/tier4_v2x_msgs:/home/edina/ros2_ws/install/tier4_api_msgs:/home/edina/ros2_ws/install/tier4_system_msgs:/home/edina/ros2_ws/install/tier4_simulation_msgs:/home/edina/ros2_ws/install/tier4_rtc_msgs:/home/edina/ros2_ws/install/simulator:/home/edina/ros2_ws/install/plan_long_emergency:/home/edina/ros2_ws/install/crp_msgs:/home/edina/ros2_ws/install/tier4_planning_msgs:/home/edina/ros2_ws/install/tier4_perception_msgs:/home/edina/ros2_ws/install/tier4_metric_msgs:/home/edina/ros2_ws/install/tier4_map_msgs:/home/edina/ros2_ws/install/tier4_localization_msgs:/home/edina/ros2_ws/install/tier4_hmi_msgs:/home/edina/ros2_ws/install/tier4_external_api_msgs:/home/edina/ros2_ws/install/tier4_debug_msgs:/home/edina/ros2_ws/install/tier4_control_msgs:/home/edina/ros2_ws/install/basic_concepts:/opt/ros/humble'), ('WSLENV', '')]), 'shell': False}
+[15.384388] (-) TimerEvent: {}
+[15.485357] (-) TimerEvent: {}
+[15.586359] (-) TimerEvent: {}
+[15.687365] (-) TimerEvent: {}
+[15.788368] (-) TimerEvent: {}
+[15.890409] (-) TimerEvent: {}
+[15.991431] (-) TimerEvent: {}
+[16.092904] (-) TimerEvent: {}
+[16.131146] (behavior_planner) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/behavior_planner_node.dir/src/behaviorPlanner.cpp.o\x1b[0m\n'}
+[16.193869] (-) TimerEvent: {}
+[16.294819] (-) TimerEvent: {}
+[16.395827] (-) TimerEvent: {}
+[16.497516] (-) TimerEvent: {}
+[16.598510] (-) TimerEvent: {}
+[16.699525] (-) TimerEvent: {}
+[16.800529] (-) TimerEvent: {}
+[16.901537] (-) TimerEvent: {}
+[17.002571] (-) TimerEvent: {}
+[17.103588] (-) TimerEvent: {}
+[17.205274] (-) TimerEvent: {}
+[17.307223] (-) TimerEvent: {}
+[17.408940] (-) TimerEvent: {}
+[17.509762] (-) TimerEvent: {}
+[17.611311] (-) TimerEvent: {}
+[17.712328] (-) TimerEvent: {}
+[17.813183] (-) TimerEvent: {}
+[17.914186] (-) TimerEvent: {}
+[18.015150] (-) TimerEvent: {}
+[18.116573] (-) TimerEvent: {}
+[18.217589] (-) TimerEvent: {}
+[18.318646] (-) TimerEvent: {}
+[18.420049] (-) TimerEvent: {}
+[18.521047] (-) TimerEvent: {}
+[18.622078] (-) TimerEvent: {}
+[18.724106] (-) TimerEvent: {}
+[18.825618] (-) TimerEvent: {}
+[18.927391] (-) TimerEvent: {}
+[19.028400] (-) TimerEvent: {}
+[19.129399] (-) TimerEvent: {}
+[19.230401] (-) TimerEvent: {}
+[19.331408] (-) TimerEvent: {}
+[19.433104] (-) TimerEvent: {}
+[19.534098] (-) TimerEvent: {}
+[19.635121] (-) TimerEvent: {}
+[19.736636] (-) TimerEvent: {}
+[19.837633] (-) TimerEvent: {}
+[19.938630] (-) TimerEvent: {}
+[20.039625] (-) TimerEvent: {}
+[20.140924] (-) TimerEvent: {}
+[20.241940] (-) TimerEvent: {}
+[20.343945] (-) TimerEvent: {}
+[20.445331] (-) TimerEvent: {}
+[20.546315] (-) TimerEvent: {}
+[20.647336] (-) TimerEvent: {}
+[20.749374] (-) TimerEvent: {}
+[20.850754] (-) TimerEvent: {}
+[20.951714] (-) TimerEvent: {}
+[21.052857] (-) TimerEvent: {}
+[21.153852] (-) TimerEvent: {}
+[21.254847] (-) TimerEvent: {}
+[21.356113] (-) TimerEvent: {}
+[21.457771] (-) TimerEvent: {}
+[21.558774] (-) TimerEvent: {}
+[21.659783] (-) TimerEvent: {}
+[21.760784] (-) TimerEvent: {}
+[21.861801] (-) TimerEvent: {}
+[21.964264] (-) TimerEvent: {}
+[22.065384] (-) TimerEvent: {}
+[22.166341] (-) TimerEvent: {}
+[22.267338] (-) TimerEvent: {}
+[22.368366] (-) TimerEvent: {}
+[22.470299] (-) TimerEvent: {}
+[22.571831] (-) TimerEvent: {}
+[22.673280] (-) TimerEvent: {}
+[22.774111] (-) TimerEvent: {}
+[22.875123] (-) TimerEvent: {}
+[22.976115] (-) TimerEvent: {}
+[23.077151] (-) TimerEvent: {}
+[23.178958] (-) TimerEvent: {}
+[23.280065] (-) TimerEvent: {}
+[23.381283] (-) TimerEvent: {}
+[23.482723] (-) TimerEvent: {}
+[23.584709] (-) TimerEvent: {}
+[23.685720] (-) TimerEvent: {}
+[23.786740] (-) TimerEvent: {}
+[23.888256] (-) TimerEvent: {}
+[23.989663] (-) TimerEvent: {}
+[24.090734] (-) TimerEvent: {}
+[24.191750] (-) TimerEvent: {}
+[24.293774] (-) TimerEvent: {}
+[24.395675] (-) TimerEvent: {}
+[24.496689] (-) TimerEvent: {}
+[24.597729] (-) TimerEvent: {}
+[24.699259] (-) TimerEvent: {}
+[24.800925] (-) TimerEvent: {}
+[24.902013] (-) TimerEvent: {}
+[25.003101] (-) TimerEvent: {}
+[25.105057] (-) TimerEvent: {}
+[25.206055] (-) TimerEvent: {}
+[25.307115] (-) TimerEvent: {}
+[25.409059] (-) TimerEvent: {}
+[25.510386] (-) TimerEvent: {}
+[25.611400] (-) TimerEvent: {}
+[25.712405] (-) TimerEvent: {}
+[25.813422] (-) TimerEvent: {}
+[25.914453] (-) TimerEvent: {}
+[26.015429] (-) TimerEvent: {}
+[26.116457] (-) TimerEvent: {}
+[26.217871] (-) TimerEvent: {}
+[26.318916] (-) TimerEvent: {}
+[26.420178] (-) TimerEvent: {}
+[26.522080] (-) TimerEvent: {}
+[26.624070] (-) TimerEvent: {}
+[26.725117] (-) TimerEvent: {}
+[26.826384] (-) TimerEvent: {}
+[26.957424] (-) TimerEvent: {}
+[27.069330] (-) TimerEvent: {}
+[27.170691] (-) TimerEvent: {}
+[27.273425] (-) TimerEvent: {}
+[27.374336] (-) TimerEvent: {}
+[27.476149] (-) TimerEvent: {}
+[27.577160] (-) TimerEvent: {}
+[27.678160] (-) TimerEvent: {}
+[27.779168] (-) TimerEvent: {}
+[27.880158] (-) TimerEvent: {}
+[27.981175] (-) TimerEvent: {}
+[28.082194] (-) TimerEvent: {}
+[28.184197] (-) TimerEvent: {}
+[28.285231] (-) TimerEvent: {}
+[28.387214] (-) TimerEvent: {}
+[28.488593] (-) TimerEvent: {}
+[28.590125] (-) TimerEvent: {}
+[28.691667] (-) TimerEvent: {}
+[28.792723] (-) TimerEvent: {}
+[28.893991] (-) TimerEvent: {}
+[28.995022] (-) TimerEvent: {}
+[29.096036] (-) TimerEvent: {}
+[29.197040] (-) TimerEvent: {}
+[29.298039] (-) TimerEvent: {}
+[29.399750] (-) TimerEvent: {}
+[29.501480] (-) TimerEvent: {}
+[29.603486] (-) TimerEvent: {}
+[29.705052] (-) TimerEvent: {}
+[29.806875] (-) TimerEvent: {}
+[29.907880] (-) TimerEvent: {}
+[30.009659] (-) TimerEvent: {}
+[30.110203] (-) TimerEvent: {}
+[30.211212] (-) TimerEvent: {}
+[30.312238] (-) TimerEvent: {}
+[30.413977] (-) TimerEvent: {}
+[30.514962] (-) TimerEvent: {}
+[30.616027] (-) TimerEvent: {}
+[30.717018] (-) TimerEvent: {}
+[30.817996] (-) TimerEvent: {}
+[30.918989] (-) TimerEvent: {}
+[31.020010] (-) TimerEvent: {}
+[31.120999] (-) TimerEvent: {}
+[31.222021] (-) TimerEvent: {}
+[31.324040] (-) TimerEvent: {}
+[31.426032] (-) TimerEvent: {}
+[31.527339] (-) TimerEvent: {}
+[31.628301] (-) TimerEvent: {}
+[31.729304] (-) TimerEvent: {}
+[31.831350] (-) TimerEvent: {}
+[31.933326] (-) TimerEvent: {}
+[32.034353] (-) TimerEvent: {}
+[32.135680] (-) TimerEvent: {}
+[32.236576] (-) TimerEvent: {}
+[32.337602] (-) TimerEvent: {}
+[32.438582] (-) TimerEvent: {}
+[32.539765] (-) TimerEvent: {}
+[32.640770] (-) TimerEvent: {}
+[32.741796] (-) TimerEvent: {}
+[32.843981] (-) TimerEvent: {}
+[32.945538] (-) TimerEvent: {}
+[33.047305] (-) TimerEvent: {}
+[33.148491] (-) TimerEvent: {}
+[33.249309] (-) TimerEvent: {}
+[33.350299] (-) TimerEvent: {}
+[33.451578] (-) TimerEvent: {}
+[33.552591] (-) TimerEvent: {}
+[33.654143] (-) TimerEvent: {}
+[33.755657] (-) TimerEvent: {}
+[33.856598] (-) TimerEvent: {}
+[33.957602] (-) TimerEvent: {}
+[34.058671] (-) TimerEvent: {}
+[34.159904] (-) TimerEvent: {}
+[34.262727] (-) TimerEvent: {}
+[34.363690] (-) TimerEvent: {}
+[34.465042] (-) TimerEvent: {}
+[34.566064] (-) TimerEvent: {}
+[34.667051] (-) TimerEvent: {}
+[34.768063] (-) TimerEvent: {}
+[34.869102] (-) TimerEvent: {}
+[34.970075] (-) TimerEvent: {}
+[35.071071] (-) TimerEvent: {}
+[35.172892] (-) TimerEvent: {}
+[35.273908] (-) TimerEvent: {}
+[35.375702] (-) TimerEvent: {}
+[35.476981] (-) TimerEvent: {}
+[35.578031] (-) TimerEvent: {}
+[35.679540] (-) TimerEvent: {}
+[35.781192] (-) TimerEvent: {}
+[35.882212] (-) TimerEvent: {}
+[35.984614] (-) TimerEvent: {}
+[36.086266] (-) TimerEvent: {}
+[36.187282] (-) TimerEvent: {}
+[36.288279] (-) TimerEvent: {}
+[36.389923] (-) TimerEvent: {}
+[36.490906] (-) TimerEvent: {}
+[36.591937] (-) TimerEvent: {}
+[36.692934] (-) TimerEvent: {}
+[36.793928] (-) TimerEvent: {}
+[36.894937] (-) TimerEvent: {}
+[36.995946] (-) TimerEvent: {}
+[37.096958] (-) TimerEvent: {}
+[37.197968] (-) TimerEvent: {}
+[37.298995] (-) TimerEvent: {}
+[37.399977] (-) TimerEvent: {}
+[37.501607] (-) TimerEvent: {}
+[37.603623] (-) TimerEvent: {}
+[37.704869] (-) TimerEvent: {}
+[37.806855] (-) TimerEvent: {}
+[37.907860] (-) TimerEvent: {}
+[38.008858] (-) TimerEvent: {}
+[38.109881] (-) TimerEvent: {}
+[38.211073] (-) TimerEvent: {}
+[38.312074] (-) TimerEvent: {}
+[38.413844] (-) TimerEvent: {}
+[38.515593] (-) TimerEvent: {}
+[38.616603] (-) TimerEvent: {}
+[38.718048] (-) TimerEvent: {}
+[38.819497] (-) TimerEvent: {}
+[38.921081] (-) TimerEvent: {}
+[39.022544] (-) TimerEvent: {}
+[39.123551] (-) TimerEvent: {}
+[39.224546] (-) TimerEvent: {}
+[39.325575] (-) TimerEvent: {}
+[39.426830] (-) TimerEvent: {}
+[39.527864] (-) TimerEvent: {}
+[39.628844] (-) TimerEvent: {}
+[39.701058] (behavior_planner) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable behavior_planner_node\x1b[0m\n'}
+[39.729399] (-) TimerEvent: {}
+[39.830392] (-) TimerEvent: {}
+[39.932368] (-) TimerEvent: {}
+[40.033457] (-) TimerEvent: {}
+[40.134843] (-) TimerEvent: {}
+[40.236822] (-) TimerEvent: {}
+[40.338750] (-) TimerEvent: {}
+[40.440330] (-) TimerEvent: {}
+[40.541310] (-) TimerEvent: {}
+[40.642416] (-) TimerEvent: {}
+[40.744700] (-) TimerEvent: {}
+[40.845744] (-) TimerEvent: {}
+[40.947683] (-) TimerEvent: {}
+[41.048768] (-) TimerEvent: {}
+[41.150532] (-) TimerEvent: {}
+[41.251533] (-) TimerEvent: {}
+[41.352542] (-) TimerEvent: {}
+[41.453517] (-) TimerEvent: {}
+[41.554381] (-) TimerEvent: {}
+[41.655383] (-) TimerEvent: {}
+[41.756237] (-) TimerEvent: {}
+[41.858023] (-) TimerEvent: {}
+[41.959555] (-) TimerEvent: {}
+[42.061140] (behavior_planner) StdoutLine: {'line': b'[100%] Built target behavior_planner_node\n'}
+[42.061521] (-) TimerEvent: {}
+[42.163282] (-) TimerEvent: {}
+[42.191272] (behavior_planner) CommandEnded: {'returncode': 0}
+[42.194416] (behavior_planner) JobProgress: {'identifier': 'behavior_planner', 'progress': 'install'}
+[42.264268] (-) TimerEvent: {}
+[42.310678] (behavior_planner) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner'], 'cwd': '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'edina'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/edina/ros2_ws/install/tier4_vehicle_msgs/lib:/home/edina/ros2_ws/install/tier4_v2x_msgs/lib:/home/edina/ros2_ws/install/tier4_api_msgs/lib:/home/edina/ros2_ws/install/tier4_system_msgs/lib:/home/edina/ros2_ws/install/tier4_simulation_msgs/lib:/home/edina/ros2_ws/install/tier4_rtc_msgs/lib:/home/edina/ros2_ws/install/crp_msgs/lib:/home/edina/ros2_ws/install/tier4_planning_msgs/lib:/home/edina/ros2_ws/install/tier4_perception_msgs/lib:/home/edina/ros2_ws/install/tier4_metric_msgs/lib:/home/edina/ros2_ws/install/tier4_map_msgs/lib:/home/edina/ros2_ws/install/tier4_localization_msgs/lib:/home/edina/ros2_ws/install/tier4_hmi_msgs/lib:/home/edina/ros2_ws/install/tier4_external_api_msgs/lib:/home/edina/ros2_ws/install/tier4_debug_msgs/lib:/home/edina/ros2_ws/install/tier4_control_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/edina'), ('OLDPWD', '/home/edina/ros2_ws/src'), ('ROS_PYTHON_VERSION', '3'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('COLCON_PREFIX_PATH', '/home/edina/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'edina'), ('NAME', 'LAPTOP-ETSLVS59'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files/Zulu/zulu-21/bin/:/mnt/c/Program Files/Python312/Scripts/:/mnt/c/Program Files/Python312/:/mnt/c/Program Files/Microsoft/jdk-11.0.16.101-hotspot/bin:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Git/cmd:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility:/mnt/c/Program Files (x86)/Vector CANdb++ 3.1/Exec32:/mnt/c/Program Files/Java/jdk-21/bin:/mnt/c/xampp/php:/mnt/c/Program Files/Tailscale/:/mnt/c/Users/HP/AppData/Local/Programs/Python/Python311/Scripts/:/mnt/c/Users/HP/AppData/Local/Programs/Python/Python311/:/mnt/c/Users/HP/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/HP/.dotnet/tools:/mnt/c/Users/HP/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/HP/AppData/Roaming/npm:/mnt/c/Users/HP/AppData/Local/GitHubDesktop/bin:/snap/bin'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/home/edina/ros2_ws/install/visualizer:/home/edina/ros2_ws/install/velocity_estimator:/home/edina/ros2_ws/install/tier4_auto_msgs_converter:/home/edina/ros2_ws/install/tier4_vehicle_msgs:/home/edina/ros2_ws/install/tier4_v2x_msgs:/home/edina/ros2_ws/install/tier4_api_msgs:/home/edina/ros2_ws/install/tier4_system_msgs:/home/edina/ros2_ws/install/tier4_simulation_msgs:/home/edina/ros2_ws/install/tier4_rtc_msgs:/home/edina/ros2_ws/install/simulator:/home/edina/ros2_ws/install/plan_long_emergency:/home/edina/ros2_ws/install/crp_msgs:/home/edina/ros2_ws/install/tier4_planning_msgs:/home/edina/ros2_ws/install/tier4_perception_msgs:/home/edina/ros2_ws/install/tier4_metric_msgs:/home/edina/ros2_ws/install/tier4_map_msgs:/home/edina/ros2_ws/install/tier4_localization_msgs:/home/edina/ros2_ws/install/tier4_hmi_msgs:/home/edina/ros2_ws/install/tier4_external_api_msgs:/home/edina/ros2_ws/install/tier4_debug_msgs:/home/edina/ros2_ws/install/tier4_control_msgs:/home/edina/ros2_ws/install/basic_concepts:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/edina/ros2_ws/install/tier4_vehicle_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_v2x_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_api_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_system_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_simulation_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_rtc_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/crp_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_planning_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_perception_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_metric_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_map_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_localization_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_hmi_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_external_api_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_debug_msgs/local/lib/python3.10/dist-packages:/home/edina/ros2_ws/install/tier4_control_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('HOSTTYPE', 'x86_64'), ('CMAKE_PREFIX_PATH', '/home/edina/ros2_ws/install/visualizer:/home/edina/ros2_ws/install/velocity_estimator:/home/edina/ros2_ws/install/tier4_auto_msgs_converter:/home/edina/ros2_ws/install/tier4_vehicle_msgs:/home/edina/ros2_ws/install/tier4_v2x_msgs:/home/edina/ros2_ws/install/tier4_api_msgs:/home/edina/ros2_ws/install/tier4_system_msgs:/home/edina/ros2_ws/install/tier4_simulation_msgs:/home/edina/ros2_ws/install/tier4_rtc_msgs:/home/edina/ros2_ws/install/simulator:/home/edina/ros2_ws/install/plan_long_emergency:/home/edina/ros2_ws/install/crp_msgs:/home/edina/ros2_ws/install/tier4_planning_msgs:/home/edina/ros2_ws/install/tier4_perception_msgs:/home/edina/ros2_ws/install/tier4_metric_msgs:/home/edina/ros2_ws/install/tier4_map_msgs:/home/edina/ros2_ws/install/tier4_localization_msgs:/home/edina/ros2_ws/install/tier4_hmi_msgs:/home/edina/ros2_ws/install/tier4_external_api_msgs:/home/edina/ros2_ws/install/tier4_debug_msgs:/home/edina/ros2_ws/install/tier4_control_msgs:/home/edina/ros2_ws/install/basic_concepts:/opt/ros/humble'), ('WSLENV', '')]), 'shell': False}
+[42.364823] (-) TimerEvent: {}
+[42.424083] (behavior_planner) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[42.427283] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/lib/behavior_planner/behavior_planner_node\n'}
+[42.465218] (-) TimerEvent: {}
+[42.488797] (behavior_planner) StdoutLine: {'line': b'-- Set runtime path of "/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/lib/behavior_planner/behavior_planner_node" to ""\n'}
+[42.493238] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/ament_index/resource_index/package_run_dependencies/behavior_planner\n'}
+[42.499964] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/ament_index/resource_index/parent_prefix_path/behavior_planner\n'}
+[42.505410] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/environment/ament_prefix_path.sh\n'}
+[42.509137] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/environment/ament_prefix_path.dsv\n'}
+[42.513406] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/environment/path.sh\n'}
+[42.516816] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/environment/path.dsv\n'}
+[42.521499] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/local_setup.bash\n'}
+[42.526364] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/local_setup.sh\n'}
+[42.530570] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/local_setup.zsh\n'}
+[42.534056] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/local_setup.dsv\n'}
+[42.537679] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/package.dsv\n'}
+[42.542563] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/ament_index/resource_index/packages/behavior_planner\n'}
+[42.547615] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/cmake/behavior_plannerConfig.cmake\n'}
+[42.551140] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/cmake/behavior_plannerConfig-version.cmake\n'}
+[42.554849] (behavior_planner) StdoutLine: {'line': b'-- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/package.xml\n'}
+[42.566221] (behavior_planner) CommandEnded: {'returncode': 0}
+[42.566946] (-) TimerEvent: {}
+[42.658449] (behavior_planner) JobEnded: {'identifier': 'behavior_planner', 'rc': 0}
+[42.665090] (-) EventReactorShutdown: {}

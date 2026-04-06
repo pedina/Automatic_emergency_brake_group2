@@ -1,0 +1,4 @@
+source;share/behavior_planner/local_setup.bash
+source;share/behavior_planner/local_setup.dsv
+source;share/behavior_planner/local_setup.sh
+source;share/behavior_planner/local_setup.zsh

@@ -1,0 +1,69 @@
+[0.129s] Invoking command in '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/behavior_planner -DCMAKE_INSTALL_PREFIX=/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner
+[0.808s] -- The C compiler identification is GNU 11.4.0
+[1.306s] -- The CXX compiler identification is GNU 11.4.0
+[1.456s] -- Detecting C compiler ABI info
+[2.403s] -- Detecting C compiler ABI info - done
+[2.423s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.426s] -- Detecting C compile features
+[2.428s] -- Detecting C compile features - done
+[2.450s] -- Detecting CXX compiler ABI info
+[3.416s] -- Detecting CXX compiler ABI info - done
+[3.436s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.437s] -- Detecting CXX compile features
+[3.440s] -- Detecting CXX compile features - done
+[3.523s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[4.513s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[5.717s] -- Found rclcpp: 16.0.17 (/opt/ros/humble/share/rclcpp/cmake)
+[6.483s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[6.599s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[6.733s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[6.888s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[7.103s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[7.819s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[7.882s] -- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[9.548s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[10.017s] -- Found FastRTPS: /opt/ros/humble/include  
+[10.825s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[10.960s] -- Looking for pthread.h
+[11.723s] -- Looking for pthread.h - found
+[11.727s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[12.681s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[12.686s] -- Found Threads: TRUE  
+[13.092s] -- Found crp_msgs: 0.0.0 (/home/edina/ros2_ws/install/crp_msgs/share/crp_msgs/cmake)
+[14.094s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[14.869s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[14.870s] -- Configured cppcheck include dirs: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/behavior_planner/include
+[14.870s] -- Configured cppcheck exclude dirs and/or files: 
+[14.887s] -- Added test 'lint_cmake' to check CMake code style
+[14.910s] -- Added test 'uncrustify' to check C / C++ code style
+[14.910s] -- Configured uncrustify additional arguments: 
+[14.925s] -- Added test 'xmllint' to check XML markup files
+[14.982s] -- Configuring done
+[15.174s] -- Generating done
+[15.328s] -- Build files have been written to: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner
+[15.350s] Invoked command in '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/behavior_planner -DCMAKE_INSTALL_PREFIX=/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner
+[15.356s] Invoking command in '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner -- -j8 -l8
+[16.130s] [ 50%] [32mBuilding CXX object CMakeFiles/behavior_planner_node.dir/src/behaviorPlanner.cpp.o[0m
+[39.700s] [100%] [32m[1mLinking CXX executable behavior_planner_node[0m
+[42.060s] [100%] Built target behavior_planner_node
+[42.190s] Invoked command in '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner -- -j8 -l8
+[42.314s] Invoking command in '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner
+[42.423s] -- Install configuration: ""
+[42.426s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/lib/behavior_planner/behavior_planner_node
+[42.488s] -- Set runtime path of "/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/lib/behavior_planner/behavior_planner_node" to ""
+[42.492s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/ament_index/resource_index/package_run_dependencies/behavior_planner
+[42.499s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/ament_index/resource_index/parent_prefix_path/behavior_planner
+[42.504s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/environment/ament_prefix_path.sh
+[42.508s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/environment/ament_prefix_path.dsv
+[42.512s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/environment/path.sh
+[42.516s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/environment/path.dsv
+[42.521s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/local_setup.bash
+[42.525s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/local_setup.sh
+[42.530s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/local_setup.zsh
+[42.533s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/local_setup.dsv
+[42.537s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/package.dsv
+[42.542s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/ament_index/resource_index/packages/behavior_planner
+[42.547s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/cmake/behavior_plannerConfig.cmake
+[42.550s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/cmake/behavior_plannerConfig-version.cmake
+[42.554s] -- Installing: /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/install/behavior_planner/share/behavior_planner/package.xml
+[42.565s] Invoked command in '/home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/edina/ros2_ws/src/Automatic_emergency_brake_group2/build/behavior_planner

@@ -61,26 +61,91 @@ void BehaviorPlanner::scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr 
 void BehaviorPlanner::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg) {
     last_ego = msg;
 
+    last_valid_scenario_     = msg;       
+    last_valid_scenario_time_ = this->now();   
+    missing_scenario_cycles_ = 0;
+
     if (debugEnabled)
     {
         RCLCPP_INFO(this->get_logger(), "New Ego received!");
     }
 }
 
+autoware_perception_msgs::msg::PredictedObject BehaviorPlanner::calcMissingObject(const autoware_perception_msgs::msg::PredictedObject& obj,double dt)
+{
+    auto ext = obj;
+ 
+    double x0  = obj.kinematics.initial_pose_with_covariance.pose.position.x;
+    double y0  = obj.kinematics.initial_pose_with_covariance.pose.position.y;
+    double vx0 = obj.kinematics.initial_twist_with_covariance.twist.linear.x;
+    double vy0 = obj.kinematics.initial_twist_with_covariance.twist.linear.y;
+    double ax0 = obj.kinematics.initial_acceleration_with_covariance.accel.linear.x;
+    double ay0 = obj.kinematics.initial_acceleration_with_covariance.accel.linear.y;
+ 
+    double dt2 = dt * dt;
+ 
+    ext.kinematics.initial_pose_with_covariance.pose.position.x = x0 + vx0*dt + 0.5*ax0*dt2;
+    ext.kinematics.initial_pose_with_covariance.pose.position.y = y0 + vy0*dt + 0.5*ay0*dt2;
+    ext.kinematics.initial_twist_with_covariance.twist.linear.x = vx0 + ax0*dt;
+    ext.kinematics.initial_twist_with_covariance.twist.linear.y = vy0 + ay0*dt;
+ 
+    return ext;
+}
+
 void BehaviorPlanner::timerCallback() {
-    if (last_ego && last_scenario) {
-        double ego_x = last_ego->pose.pose.position.x;
-        double ego_y = last_ego->pose.pose.position.y;
+    if (!last_ego)
+    {
+        RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
+            "No ego data yet, waiting...");
+        return;
+    }
+    crp_msgs::msg::Scenario::SharedPtr working_scenario;
+ 
+    if (last_scenario)
+    {
+        working_scenario = last_scenario;
+    }
+    else if (last_valid_scenario_ && missing_scenario_cycles_ <= MAX_MISSING_CYCLES)
+    {
+        missing_scenario_cycles_++;
+        double dt = (this->now() - last_valid_scenario_time_).seconds();
+ 
+        RCLCPP_WARN(this->get_logger(),"[H-03] Scenario missing (cycle %d/%d), extrapolating objects by dt=%.3fs",
+            missing_scenario_cycles_, MAX_MISSING_CYCLES, dt);
+ 
+        auto calc_missing_value = std::make_shared<crp_msgs::msg::Scenario>(*last_valid_scenario_);
+        for (auto& obj : calc_missing_value->local_moving_objects.objects)
+            obj = calcMissingObject(obj, dt);
+        for (auto& obj : calc_missing_value->local_obstacles.objects)
+            obj = calcMissingObject(obj, dt);
+ 
+        working_scenario = calc_missing_value;
+    }
+    else
+    {
+        RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "[H-03] Sensor data missing >%d cycles! Degraded mode: publishing empty target.",
+            MAX_MISSING_CYCLES);
+ 
+        crp_msgs::msg::TargetSpace empty_msg;
+        empty_msg.header.stamp = this->get_clock()->now();
+        pub_targetSpace->publish(empty_msg);
+        return;
+    }
 
-        obstacles  = last_scenario->local_obstacles.objects;
-        objects = last_scenario->local_moving_objects.objects;
-        relevant_obstacles.clear();
-        relevant_objects.clear();
+    last_scenario = nullptr;
+ 
+    double ego_x = last_ego->pose.pose.position.x;
+    double ego_y = last_ego->pose.pose.position.y;
+ 
+    obstacles = working_scenario->local_obstacles.objects;
+    objects   = working_scenario->local_moving_objects.objects;
+    relevant_obstacles.clear();
+    relevant_objects.clear();
+ 
+    out_targetSpace.free_space   = working_scenario->free_space;
+    out_targetSpace.header.stamp = this->get_clock()->now();
 
-        out_targetSpace.free_space = last_scenario->free_space;
-        out_targetSpace.header.stamp = this->get_clock()->now();
-
-        for (long unsigned int i = 0; i < obstacles.size(); i++)
+    for (long unsigned int i = 0; i < obstacles.size(); i++)
         {
             auto current_obstacle = obstacles[i];
             double obstacle_x = current_obstacle.kinematics.initial_pose_with_covariance.pose.position.x;
@@ -124,7 +189,8 @@ void BehaviorPlanner::timerCallback() {
 
         pub_targetSpace->publish(out_targetSpace);
     }
-}
+    
+
 
 
 int main(int argc, char** argv)
