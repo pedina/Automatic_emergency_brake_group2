@@ -40,7 +40,7 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
     );
 
     timer_pub = this->create_wall_timer(
-        std::chrono::milliseconds(200),
+        std::chrono::milliseconds(20),
         std::bind(&BehaviorPlanner::timerCallback, this)
     );
 
@@ -50,6 +50,10 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
 
 void BehaviorPlanner::scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr msg) {
     last_scenario = msg;
+
+    last_valid_scenario_ = msg;
+    last_valid_scenario_time_ = this->now();
+    missing_scenario_cycles_ = 0;
 
     if (debugEnabled)
     {
@@ -61,35 +65,10 @@ void BehaviorPlanner::scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr 
 void BehaviorPlanner::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg) {
     last_ego = msg;
 
-    last_valid_scenario_     = msg;       
-    last_valid_scenario_time_ = this->now();   
-    missing_scenario_cycles_ = 0;
-
     if (debugEnabled)
     {
         RCLCPP_INFO(this->get_logger(), "New Ego received!");
     }
-}
-
-autoware_perception_msgs::msg::PredictedObject BehaviorPlanner::calcMissingObject(const autoware_perception_msgs::msg::PredictedObject& obj,double dt)
-{
-    auto ext = obj;
- 
-    double x0  = obj.kinematics.initial_pose_with_covariance.pose.position.x;
-    double y0  = obj.kinematics.initial_pose_with_covariance.pose.position.y;
-    double vx0 = obj.kinematics.initial_twist_with_covariance.twist.linear.x;
-    double vy0 = obj.kinematics.initial_twist_with_covariance.twist.linear.y;
-    double ax0 = obj.kinematics.initial_acceleration_with_covariance.accel.linear.x;
-    double ay0 = obj.kinematics.initial_acceleration_with_covariance.accel.linear.y;
- 
-    double dt2 = dt * dt;
- 
-    ext.kinematics.initial_pose_with_covariance.pose.position.x = x0 + vx0*dt + 0.5*ax0*dt2;
-    ext.kinematics.initial_pose_with_covariance.pose.position.y = y0 + vy0*dt + 0.5*ay0*dt2;
-    ext.kinematics.initial_twist_with_covariance.twist.linear.x = vx0 + ax0*dt;
-    ext.kinematics.initial_twist_with_covariance.twist.linear.y = vy0 + ay0*dt;
- 
-    return ext;
 }
 
 void BehaviorPlanner::timerCallback() {
@@ -104,8 +83,9 @@ void BehaviorPlanner::timerCallback() {
     if (last_scenario)
     {
         working_scenario = last_scenario;
+        last_scenario = nullptr;
     }
-    else if (last_valid_scenario_ && missing_scenario_cycles_ <= MAX_MISSING_CYCLES)
+    else if (last_valid_scenario_ && (missing_scenario_cycles_ <= MAX_MISSING_CYCLES))
     {
         missing_scenario_cycles_++;
         double dt = (this->now() - last_valid_scenario_time_).seconds();
@@ -132,7 +112,6 @@ void BehaviorPlanner::timerCallback() {
         return;
     }
 
-    last_scenario = nullptr;
  
     double ego_x = last_ego->pose.pose.position.x;
     double ego_y = last_ego->pose.pose.position.y;
@@ -190,8 +169,6 @@ void BehaviorPlanner::timerCallback() {
         pub_targetSpace->publish(out_targetSpace);
     }
     
-
-
 
 int main(int argc, char** argv)
 {
