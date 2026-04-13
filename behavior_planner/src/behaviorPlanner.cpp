@@ -38,7 +38,12 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
         topic,
         1
     );
-
+    
+    pub_emergency_brake = this->create_publisher<std_msgs::msg::Bool>(
+    "/emergency_brake",
+    1
+    );
+    
     timer_pub = this->create_wall_timer(
         std::chrono::milliseconds(20),
         std::bind(&BehaviorPlanner::timerCallback, this)
@@ -124,6 +129,10 @@ void BehaviorPlanner::timerCallback() {
     out_targetSpace.free_space   = working_scenario->free_space;
     out_targetSpace.header.stamp = this->get_clock()->now();
 
+    bool emergency_brake = false;
+    double limit = (double) 100 * 100;
+    double aeb_limit = 10.0 * 10.0;
+    
     for (long unsigned int i = 0; i < obstacles.size(); i++)
         {
             auto current_obstacle = obstacles[i];
@@ -134,11 +143,17 @@ void BehaviorPlanner::timerCallback() {
             double dy = ego_y - obstacle_y;
 
             double distance = dx*dx + dy*dy;
-            double limit = (double) 100 * 100;
+            
             
 
             if ((obstacle_x >= ego_x) && (distance <= limit)) {
                 relevant_obstacles.push_back(current_obstacle);
+                
+                if (distance <= aeb_limit) {
+                    emergency_brake = true;
+                    RCLCPP_WARN(this->get_logger(), "[AEB] Emergency brake activated! Obstacle distance: %.2f m", std::sqrt(distance));
+                }
+                
                 RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %f", obstacle_x, obstacle_y, distance);
                 RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f", ego_x, ego_y);
             }
@@ -158,6 +173,12 @@ void BehaviorPlanner::timerCallback() {
 
             if ((object_x >= ego_x) && (distance <= limit)) {
                 relevant_objects.push_back(current_object);
+
+                if (distance <= aeb_limit) {
+                    emergency_brake = true;
+                    RCLCPP_WARN(this->get_logger(), "[AEB] Emergency brake activated! Object distance: %.2f m", std::sqrt(distance));
+                }
+                
                 RCLCPP_INFO(this->get_logger(), "New object,   x: %f y: %f distance: %f", object_x, object_y, distance);
                 RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f", ego_x, ego_y);
             }
@@ -166,6 +187,10 @@ void BehaviorPlanner::timerCallback() {
         out_targetSpace.relevant_obstacles = relevant_obstacles;
         out_targetSpace.relevant_objects = relevant_objects;
 
+        auto brake_msg = std_msgs::msg::Bool();
+        brake_msg.data = emergency_brake;
+        pub_emergency_brake->publish(brake_msg);
+    
         pub_targetSpace->publish(out_targetSpace);
     }
     
