@@ -6,6 +6,7 @@
 #include "crp_msgs/msg/scenario.hpp"
 #include "crp_msgs/msg/target_space.hpp"
 #include "tier4_planning_msgs/msg/scenario.hpp"
+#include "std_msgs/msg/bool.hpp"
 
 class BehaviorPlanner : public rclcpp::Node
 {
@@ -24,6 +25,7 @@ private:
 
     rclcpp::Publisher<tier4_planning_msgs::msg::Scenario>::SharedPtr pub_scenario;
     rclcpp::Publisher<crp_msgs::msg::TargetSpace>::SharedPtr pub_targetSpace;
+    rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pub_emergency_brake;
 
     rclcpp::TimerBase::SharedPtr timer_pub;
 
