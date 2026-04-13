@@ -165,7 +165,7 @@ void BehaviorPlanner::timerCallback() {
                 if (dir_len > 0.001) {
                     dir_x /= dir_len;
                     dir_y /= dir_len;
-                    closing_speed = rel_vx * dir_x + rel_vy * dir_y;  // pozitív = közeledik
+                    closing_speed = rel_vx * dir_x + rel_vy * dir_y;
                 }
                 
                 double dist_actual = std::sqrt(distance);
