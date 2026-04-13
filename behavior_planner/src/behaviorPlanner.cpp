@@ -7,6 +7,8 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
     this->declare_parameter<std::string>("ego_topic", "/ego");
     this->declare_parameter<std::string>("strategy_topic", "/plan/strategy");
     this->declare_parameter<std::string>("targetSpace_topic", "/plan/target_space");
+    this->declare_parameter<std::string>("behavior_topic", "/plan/strategy_behavior");
+    this->declare_parameter<int>("sensitivity", 1);
     this->declare_parameter("debugEnabled", false);
     debugEnabled = this->get_parameter("debugEnabled").as_bool();
 
@@ -35,6 +37,12 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
 
     this->get_parameter<std::string>("targetSpace_topic", topic);
     pub_targetSpace = this->create_publisher<crp_msgs::msg::TargetSpace>(
+        topic,
+        1
+    );
+
+    this->get_parameter<std::string>("behavior_topic", topic);
+    pub_behavior_ = this->create_publisher<crp_msgs::msg::Behavior>(
         topic,
         1
     );
@@ -205,6 +213,12 @@ void BehaviorPlanner::timerCallback() {
         auto brake_msg = std_msgs::msg::Bool();
         brake_msg.data = emergency_brake;
         pub_emergency_brake->publish(brake_msg);
+
+        crp_msgs::msg::Behavior behavior_msg;
+        behavior_msg.deceleration_mode.data = static_cast<uint8_t>(
+            this->get_parameter("sensitivity").as_int()
+        );
+        pub_behavior_->publish(behavior_msg);
     
         pub_targetSpace->publish(out_targetSpace);
     }
