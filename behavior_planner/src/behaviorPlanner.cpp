@@ -149,27 +149,11 @@ void BehaviorPlanner::timerCallback() {
             if ((obstacle_x >= ego_x) && (distance <= limit)) {
                 relevant_obstacles.push_back(current_obstacle);
                 
-                double ego_v = std::sqrt(last_ego->twist.twist.linear.x * last_ego->twist.twist.linear.x + 
-                                         last_ego->twist.twist.linear.y * last_ego->twist.twist.linear.y);
-                double obstacle_v = std::sqrt(current_obstacle.kinematics.initial_pose_with_covariance.twist.twist.linear.x * current_obstacle.kinematics.initial_pose_with_covariance.twist.twist.linear.x + 
-                                               current_obstacle.kinematics.initial_pose_with_covariance.twist.twist.linear.y * current_obstacle.kinematics.initial_pose_with_covariance.twist.twist.linear.y);
-                
-                double rel_vx = last_ego->twist.twist.linear.x - current_obstacle.kinematics.initial_pose_with_covariance.twist.twist.linear.x;
-                double rel_vy = last_ego->twist.twist.linear.y - current_obstacle.kinematics.initial_pose_with_covariance.twist.twist.linear.y;
-                
-                double dir_x = obstacle_x - ego_x;
-                double dir_y = obstacle_y - ego_y;
-                double dir_len = std::sqrt(dir_x*dir_x + dir_y*dir_y);
-                
-                double closing_speed = 0.0;
-                if (dir_len > 0.001) {
-                    dir_x /= dir_len;
-                    dir_y /= dir_len;
-                    closing_speed = rel_vx * dir_x + rel_vy * dir_y;
-                }
-                
-                double dist_actual = std::sqrt(distance);
-                double ttc = (closing_speed > 0.1) ? dist_actual / closing_speed : 1e6;
+                Result result = calcTTC(last_ego, current_obstacle, distance);
+                double ttc = result.ttc;
+                double closing_speed = result.closing_speed;
+                double dist_actual = result.dist_actual;
+                double ego_v = result.ego_v;
                     
                 if ((distance <= aeb_limit) || (ttc < 2.0 && closing_speed > 0.5)) {
                     emergency_brake = true;
@@ -197,27 +181,12 @@ void BehaviorPlanner::timerCallback() {
             if ((object_x >= ego_x) && (distance <= limit)) {
                 relevant_objects.push_back(current_object);
 
-                double ego_v = std::sqrt(last_ego->twist.twist.linear.x * last_ego->twist.twist.linear.x + 
-                                         last_ego->twist.twist.linear.y * last_ego->twist.twist.linear.y);
-                double object_v = std::sqrt(current_object.kinematics.initial_pose_with_covariance.twist.twist.linear.x * current_object.kinematics.initial_pose_with_covariance.twist.twist.linear.x + 
-                                             current_object.kinematics.initial_pose_with_covariance.twist.twist.linear.y * current_object.kinematics.initial_pose_with_covariance.twist.twist.linear.y);
+                Result result = calcTTC(last_ego, current_object, distance);
+                double ttc = result.ttc;
+                double closing_speed = result.closing_speed;
+                double dist_actual = result.dist_actual;
+                double ego_v = result.ego_v;
                 
-                double rel_vx = last_ego->twist.twist.linear.x - current_object.kinematics.initial_pose_with_covariance.twist.twist.linear.x;
-                double rel_vy = last_ego->twist.twist.linear.y - current_object.kinematics.initial_pose_with_covariance.twist.twist.linear.y;
-                
-                double dir_x = object_x - ego_x;
-                double dir_y = object_y - ego_y;
-                double dir_len = std::sqrt(dir_x*dir_x + dir_y*dir_y);
-                
-                double closing_speed = 0.0;
-                if (dir_len > 0.001) {
-                    dir_x /= dir_len;
-                    dir_y /= dir_len;
-                    closing_speed = rel_vx * dir_x + rel_vy * dir_y;
-                }
-                
-                double dist_actual = std::sqrt(distance);
-                double ttc = (closing_speed > 0.1) ? dist_actual / closing_speed : 1e6;
                 
                 if ((distance <= aeb_limit) || (ttc < 2.0 && closing_speed > 0.5)) {
                     emergency_brake = true;

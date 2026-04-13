@@ -8,6 +8,13 @@
 #include "tier4_planning_msgs/msg/scenario.hpp"
 #include "std_msgs/msg/bool.hpp"
 
+struct Result{
+        double ttc;
+        double closing_speed;
+        double dist_actual;
+        double ego_v;
+};
+
 class BehaviorPlanner : public rclcpp::Node
 {
 public:
@@ -19,6 +26,7 @@ private:
     void timerCallback();
 
     autoware_perception_msgs::msg::PredictedObject calcMissingObject(const autoware_perception_msgs::msg::PredictedObject& obj,double dt_seconds);
+    Result calcTTC(const crp_msgs::msg::Ego::SharedPtr ego, const autoware_perception_msgs::msg::PredictedObject object, double distance);
 
     rclcpp::Subscription<crp_msgs::msg::Scenario>::SharedPtr sub_scenario;
     rclcpp::Subscription<crp_msgs::msg::Ego>::SharedPtr sub_ego;
@@ -66,6 +74,46 @@ autoware_perception_msgs::msg::PredictedObject BehaviorPlanner::calcMissingObjec
     ext.kinematics.initial_twist_with_covariance.twist.linear.y = vy0 + ay0*dt;
  
     return ext;
+}
+
+Result BehaviorPlanner::calcTTC(const crp_msgs::msg::Ego::SharedPtr ego, const autoware_perception_msgs::msg::PredictedObject object, double distance) {
+    double ego_v = std::sqrt(ego->twist.twist.linear.x * ego->twist.twist.linear.x + 
+                             ego->twist.twist.linear.y * ego->twist.twist.linear.y);
+
+    double obstacle_v = std::sqrt(object.kinematics.initial_twist_with_covariance.twist.linear.x * object.kinematics.initial_twist_with_covariance.twist.linear.x + 
+                                  object.kinematics.initial_twist_with_covariance.twist.linear.y * object.kinematics.initial_twist_with_covariance.twist.linear.y);
+                
+    double rel_vx = ego->twist.twist.linear.x - object.kinematics.initial_twist_with_covariance.twist.linear.x;
+    double rel_vy = ego->twist.twist.linear.y - object.kinematics.initial_twist_with_covariance.twist.linear.y;
+
+    double object_x = object.kinematics.initial_pose_with_covariance.pose.position.x;
+    double object_y = object.kinematics.initial_pose_with_covariance.pose.position.y;
+
+    double ego_x = ego->pose.pose.position.x;
+    double ego_y = ego->pose.pose.position.y;
+                
+    double dir_x = object_x - ego_x;
+    double dir_y = object_y - ego_y;
+    double dir_len = std::sqrt(dir_x*dir_x + dir_y*dir_y);
+                
+    double closing_speed = 0.0;
+    if (dir_len > 0.001) {
+        dir_x /= dir_len;
+        dir_y /= dir_len;
+        closing_speed = rel_vx * dir_x + rel_vy * dir_y;
+    }
+                
+    double dist_actual = std::sqrt(distance);
+    double ttc = (closing_speed > 0.1) ? dist_actual / closing_speed : 1e6;
+
+    Result result;
+    result.ttc = ttc;
+    result.closing_speed = closing_speed;
+    result.dist_actual = dist_actual;
+    result.ego_v = ego_v;
+    
+
+    return result;
 }
 
 #endif
