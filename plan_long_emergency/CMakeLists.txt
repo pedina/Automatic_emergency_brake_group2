@@ -16,7 +16,7 @@ find_package(crp_msgs REQUIRED)
 find_package(autoware_planning_msgs REQUIRED)
 find_package(autoware_perception_msgs REQUIRED)
 
-add_executable(plan_long_emergency_node src/planLongEmergency.cpp)
+add_executable(plan_long_emergency_node src/planLongEmergencyUpgraded.cpp)
 
 target_include_directories(plan_long_emergency_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -50,5 +50,9 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
 
 ament_package()
