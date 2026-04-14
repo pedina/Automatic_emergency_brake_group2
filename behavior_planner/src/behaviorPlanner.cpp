@@ -7,6 +7,8 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
     this->declare_parameter<std::string>("ego_topic", "/ego");
     this->declare_parameter<std::string>("strategy_topic", "/plan/strategy");
     this->declare_parameter<std::string>("targetSpace_topic", "/plan/target_space");
+    this->declare_parameter<std::string>("behavior_topic", "/plan/strategy_behavior");
+    this->declare_parameter<int>("sensitivity", 1);
     this->declare_parameter("debugEnabled", false);
     debugEnabled = this->get_parameter("debugEnabled").as_bool();
 
@@ -39,6 +41,12 @@ BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
         1
     );
 
+    this->get_parameter<std::string>("behavior_topic", topic);
+    pub_behavior_ = this->create_publisher<crp_msgs::msg::Behavior>(
+        topic,
+        1
+    );
+    
     timer_pub = this->create_wall_timer(
         std::chrono::milliseconds(20),
         std::bind(&BehaviorPlanner::timerCallback, this)
@@ -124,6 +132,8 @@ void BehaviorPlanner::timerCallback() {
     out_targetSpace.free_space   = working_scenario->free_space;
     out_targetSpace.header.stamp = this->get_clock()->now();
 
+    double limit = (double) 100 * 100;
+    
     for (long unsigned int i = 0; i < obstacles.size(); i++)
         {
             auto current_obstacle = obstacles[i];
@@ -134,13 +144,18 @@ void BehaviorPlanner::timerCallback() {
             double dy = ego_y - obstacle_y;
 
             double distance = dx*dx + dy*dy;
-            double limit = (double) 100 * 100;
-            
 
-            if ((obstacle_x >= ego_x) && (distance <= limit)) {
+            Result result = calcTTC(last_ego, current_obstacle, distance);
+            double ttc = result.ttc;
+            double closing_speed = result.closing_speed;
+            double dist_actual = result.dist_actual;
+            double ego_v = result.ego_v;
+            
+            if (((obstacle_x >= ego_x) && (distance <= limit)) || (ttc < 2.0 && closing_speed > 0.5)) {
                 relevant_obstacles.push_back(current_obstacle);
-                RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %f", obstacle_x, obstacle_y, distance);
-                RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f", ego_x, ego_y);
+                
+                RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %.2f m, closing_speed: %.2f m/s", obstacle_x, obstacle_y, dist_actual, closing_speed);
+                RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f, ego_speed: %.2f m/s", ego_x, ego_y, ego_v);
             }
         }
 
@@ -154,18 +169,30 @@ void BehaviorPlanner::timerCallback() {
             double dy = ego_y - object_y;
 
             double distance = dx*dx + dy*dy;
-            double limit = (double) 100 * 100;
 
-            if ((object_x >= ego_x) && (distance <= limit)) {
-                relevant_objects.push_back(current_object);
-                RCLCPP_INFO(this->get_logger(), "New object,   x: %f y: %f distance: %f", object_x, object_y, distance);
-                RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f", ego_x, ego_y);
+            Result result = calcTTC(last_ego, current_object, distance);
+            double ttc = result.ttc;
+            double closing_speed = result.closing_speed;
+            double dist_actual = result.dist_actual;
+            double ego_v = result.ego_v;
+            
+            if (((object_x >= ego_x) && (distance <= limit)) || (ttc < 2.0 && closing_speed > 0.5)) {
+                relevant_obstacles.push_back(current_object);
+                
+                RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %.2f m, closing_speed: %.2f m/s", object_x, object_y, dist_actual, closing_speed);
+                RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f, ego_speed: %.2f m/s", ego_x, ego_y, ego_v);
             }
         }
     
         out_targetSpace.relevant_obstacles = relevant_obstacles;
         out_targetSpace.relevant_objects = relevant_objects;
 
+        crp_msgs::msg::Behavior behavior_msg;
+        behavior_msg.deceleration_mode.data = static_cast<uint8_t>(
+            this->get_parameter("sensitivity").as_int()
+        );
+        pub_behavior_->publish(behavior_msg);
+    
         pub_targetSpace->publish(out_targetSpace);
     }
     

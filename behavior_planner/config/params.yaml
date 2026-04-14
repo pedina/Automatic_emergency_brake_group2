@@ -1,0 +1,20 @@
+behavior_planner:
+  ros__parameters:
+    sensitivity: 1          # 0=High, 1=Normal, 2=Low
+    # High:   max_accel=1.5, max_jerk=2.0
+    # Normal: max_accel=2.5, max_jerk=4.0
+    # Low:    max_accel=4.0, max_jerk=6.0
+
+plan_long_emergency:
+  ros__parameters:
+    safety_distance: 5.0
+    high_max_accel: 1.5
+    high_max_jerk: 2.0
+    normal_max_accel: 2.5
+    normal_max_jerk: 4.0
+    low_max_accel: 4.0
+    low_max_jerk: 6.0
+
+control_long_emergency:
+  ros__parameters:
+    debug_enabled: false
