@@ -27,7 +27,7 @@ public:
     {
         // Paraméterek deklarálása
         this->declare_parameter<double>("safety_distance", 5.0);
-        this->declare_parameter<double>("prediction_horizon", 5.0); // Kicsit megnöveltem, hogy lássuk a jövőt
+        this->declare_parameter<double>("prediction_horizon", 5.0);
         this->declare_parameter<std::string>("ego_topic", "/ego");
         this->declare_parameter<std::string>("target_topic", "plan/target_space");
         this->declare_parameter<std::string>("behavior_topic", "plan/strategy_behavior");
@@ -40,10 +40,26 @@ public:
         std::string behaviorTopic = this->get_parameter("behavior_topic").as_string();
         std::string outputTopic = this->get_parameter("output_topic").as_string();
 
-        // Viselkedési módok határai (Lassulási szintek)
-        mode_limits_[0] = {1.5, 2.0}; // Enyhe
-        mode_limits_[1] = {2.5, 4.0}; // Közepes
-        mode_limits_[2] = {4.0, 6.0}; // Vészfék (AEB)
+        // Viselkedési módok határai (Lassulási szintek)--hozzaadva
+        this->declare_parameter<double>("high_max_accel",   1.5);
+        this->declare_parameter<double>("high_max_jerk",    2.0);
+        this->declare_parameter<double>("normal_max_accel", 2.5);
+        this->declare_parameter<double>("normal_max_jerk",  4.0);
+        this->declare_parameter<double>("low_max_accel",    4.0);
+        this->declare_parameter<double>("low_max_jerk",     6.0);
+
+        mode_limits_[0] = {
+            this->get_parameter("high_max_accel").as_double(),
+            this->get_parameter("high_max_jerk").as_double()
+        };
+        mode_limits_[1] = {
+            this->get_parameter("normal_max_accel").as_double(),
+            this->get_parameter("normal_max_jerk").as_double()
+        };
+        mode_limits_[2] = {
+            this->get_parameter("low_max_accel").as_double(),
+            this->get_parameter("low_max_jerk").as_double()
+        };
 
         // Feliratkozások
         sub_ego_ = this->create_subscription<crp_msgs::msg::Ego>(
@@ -66,7 +82,6 @@ public:
     }
 
 private:
-    // --- AZ ÁLTALAD ÍRT ZSENIÁLIS TTC MATEMATIKA ---
     std::optional<double> calculate_universal_ttc(double distance, double v_ego, double a_ego,
                                                   double v_target, double a_target,
                                                   double accel_threshold = 1e-5) {
@@ -124,7 +139,7 @@ private:
 
         double predictionHorizon = this->get_parameter("prediction_horizon").as_double();
 
-        // Ego sebesség (itt már vektorosan is lehetne, de egyelőre jó az X)
+        // Ego sebesség
         double v_ego = last_ego_->twist.twist.linear.x;
         double a_ego = last_ego_->accel.accel.linear.x;
         double ego_x = last_ego_->pose.pose.position.x;
@@ -133,7 +148,7 @@ private:
         double min_ttc = std::numeric_limits<double>::infinity();
         double target_distance_at_min_ttc = 0.0;
 
-        // 1. Keressük meg a legveszélyesebb (legkisebb TTC-jű) objektumot!
+        // 1. Legkisebb TTC-jű objektum megkeresése!
         for (const auto& obj : last_target_->relevant_objects) {
             double tx = obj.kinematics.initial_pose_with_covariance.pose.position.x;
             double ty = obj.kinematics.initial_pose_with_covariance.pose.position.y;
@@ -151,7 +166,7 @@ private:
             }
         }
 
-        // 2. Határozzuk meg a szükséges gyorsulást (a_req)
+        // 2. Szükséges gyorsulás meghatározása
         double a_req = 0.0; // Alapértelmezett: tartjuk a sebességet
 
         // Ha van veszély (TTC kisebb, mint a predikciós horizont)
@@ -162,7 +177,7 @@ private:
             // Mekkora lassulás kell, hogy megálljunk s_stop távolságon belül?
             a_req = -(v_ego * v_ego) / (2.0 * s_stop);
 
-            // Korlátozzuk a lassulást a Behavior node által megadott maximális értékre (vészfék limit)
+            // Lassulás korlátozása a Behavior node által megadott maximális értékre (vészfék limit)
             if (a_req < -lims.max_accel) {
                 a_req = -lims.max_accel;
             }
@@ -173,7 +188,7 @@ private:
             }
         }
 
-        // 3. Építsük fel a trajektóriát pontról pontra (kinematikai modell)
+        // 3. Trajektória felépítése pontról pontra (kinematikai modell)
         double dt = 0.1;
         double curr_v = v_ego;
         double curr_s = 0.0;
