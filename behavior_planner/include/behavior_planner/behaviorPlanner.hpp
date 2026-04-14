@@ -35,7 +35,6 @@
         rclcpp::Publisher<tier4_planning_msgs::msg::Scenario>::SharedPtr pub_scenario;
         rclcpp::Publisher<crp_msgs::msg::TargetSpace>::SharedPtr pub_targetSpace;
         rclcpp::Publisher<crp_msgs::msg::Behavior>::SharedPtr pub_behavior_;
-        rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pub_emergency_brake;
 
         rclcpp::TimerBase::SharedPtr timer_pub;
 
