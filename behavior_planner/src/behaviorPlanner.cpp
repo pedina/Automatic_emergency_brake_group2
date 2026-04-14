@@ -152,8 +152,6 @@ void BehaviorPlanner::timerCallback() {
 
             double distance = dx*dx + dy*dy;
             
-            
-
             if ((obstacle_x >= ego_x) && (distance <= limit)) {
                 relevant_obstacles.push_back(current_obstacle);
                 
@@ -194,7 +192,6 @@ void BehaviorPlanner::timerCallback() {
                 double closing_speed = result.closing_speed;
                 double dist_actual = result.dist_actual;
                 double ego_v = result.ego_v;
-                
                 
                 if ((distance <= aeb_limit) || (ttc < 2.0 && closing_speed > 0.5)) {
                     emergency_brake = true;
