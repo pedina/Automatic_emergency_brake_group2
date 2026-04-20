@@ -18,14 +18,14 @@ def generate_launch_description():
         ),
         Node(
             package='plan_long_emergency',
-            executable='plan_long_emergency',
+            executable='plan_long_emergency_node',
             name='plan_long_emergency',
             parameters=[params_file]
         ),
         Node(
             package='ctrl_long_emergency',
             executable='ctrl_long_emergency',
-            name='control_publisher',
+            name='ctrl_long_emergency',
             parameters=[params_file]
         ),
     ])
