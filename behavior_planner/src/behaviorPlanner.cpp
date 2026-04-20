@@ -80,7 +80,7 @@ void BehaviorPlanner::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg) {
 }
 
 void BehaviorPlanner::timerCallback() {
-    if (!last_ego)
+    if (!last_ego && debugEnabled)
     {
         RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
             "No ego data yet, waiting...");
@@ -98,9 +98,10 @@ void BehaviorPlanner::timerCallback() {
         missing_scenario_cycles_++;
         double dt = (this->now() - last_valid_scenario_time_).seconds();
  
-        RCLCPP_WARN(this->get_logger(),"[H-03] Scenario missing (cycle %d/%d), extrapolating objects by dt=%.3fs",
-            missing_scenario_cycles_, MAX_MISSING_CYCLES, dt);
- 
+        if (debugEnabled) {
+            RCLCPP_WARN(this->get_logger(),"[H-03] Scenario missing (cycle %d/%d), extrapolating objects by dt=%.3fs",
+                missing_scenario_cycles_, MAX_MISSING_CYCLES, dt);
+        }
         auto calc_missing_value = std::make_shared<crp_msgs::msg::Scenario>(*last_valid_scenario_);
         for (auto& obj : calc_missing_value->local_moving_objects.objects)
             obj = calcMissingObject(obj, dt);
@@ -111,9 +112,11 @@ void BehaviorPlanner::timerCallback() {
     }
     else
     {
-        RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "[H-03] Sensor data missing >%d cycles! Degraded mode: publishing empty target.",
-            MAX_MISSING_CYCLES);
- 
+        if (debugEnabled) {
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "[H-03] Sensor data missing >%d cycles! Degraded mode: publishing empty target.",
+                MAX_MISSING_CYCLES);
+        }
+
         crp_msgs::msg::TargetSpace empty_msg;
         empty_msg.header.stamp = this->get_clock()->now();
         pub_targetSpace->publish(empty_msg);
@@ -123,6 +126,7 @@ void BehaviorPlanner::timerCallback() {
  
     double ego_x = last_ego->pose.pose.position.x;
     double ego_y = last_ego->pose.pose.position.y;
+    double ego_vx = last_ego->accel.accel.linear.x;
  
     obstacles = working_scenario->local_obstacles.objects;
     objects   = working_scenario->local_moving_objects.objects;
@@ -132,43 +136,45 @@ void BehaviorPlanner::timerCallback() {
     out_targetSpace.free_space   = working_scenario->free_space;
     out_targetSpace.header.stamp = this->get_clock()->now();
 
-    double limit = (double) 100 * 100;
+    double limit = 100;
     
     for (long unsigned int i = 0; i < obstacles.size(); i++)
         {
-            auto current_obstacle = obstacles[i];
+            auto& current_obstacle = obstacles[i];
             double obstacle_x = current_obstacle.kinematics.initial_pose_with_covariance.pose.position.x;
             double obstacle_y = current_obstacle.kinematics.initial_pose_with_covariance.pose.position.y;
 
-            double dx = ego_x - obstacle_x;
-            double dy = ego_y - obstacle_y;
+            if (obstacle_x < 0.0 && ego_vx > 0.0) continue;
+            if (obstacle_x > 0.0 && ego_vx < 0.0) continue;
 
-            double distance = dx*dx + dy*dy;
+            double distance = std::sqrt(obstacle_x * obstacle_x + obstacle_y * obstacle_y);
 
             Result result = calcTTC(last_ego, current_obstacle, distance);
             double ttc = result.ttc;
             double closing_speed = result.closing_speed;
             double dist_actual = result.dist_actual;
-            double ego_v = result.ego_v;
+            double ego_v = result.ego_v; 
             
-            if (((obstacle_x >= ego_x) && (distance <= limit)) || (ttc < 2.0 && closing_speed > 0.5)) {
+            if ((distance <= limit) || (ttc < 2.0 && closing_speed > 0.5)) {
                 relevant_obstacles.push_back(current_obstacle);
                 
-                RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %.2f m, closing_speed: %.2f m/s", obstacle_x, obstacle_y, dist_actual, closing_speed);
-                RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f, ego_speed: %.2f m/s", ego_x, ego_y, ego_v);
+                if (debugEnabled) {
+                    RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %.2f m, closing_speed: %.2f m/s", obstacle_x, obstacle_y, dist_actual, closing_speed);
+                    RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f, ego_speed: %.2f m/s", ego_x, ego_y, ego_v);
+                }
             }
         }
 
-        for (long unsigned int i = 0; i < objects.size(); i++)
+    for (long unsigned int i = 0; i < objects.size(); i++)
         {
-            auto current_object = objects[i];
+            auto& current_object = objects[i];
             double object_x = current_object.kinematics.initial_pose_with_covariance.pose.position.x;
             double object_y = current_object.kinematics.initial_pose_with_covariance.pose.position.y;
 
-            double dx = ego_x - object_x;
-            double dy = ego_y - object_y;
+            if (object_x < 0.0 && ego_vx > 0.0) continue;
+            if (object_x > 0.0 && ego_vx < 0.0) continue;
 
-            double distance = dx*dx + dy*dy;
+            double distance = std::sqrt(object_x * object_x + object_y * object_y);
 
             Result result = calcTTC(last_ego, current_object, distance);
             double ttc = result.ttc;
@@ -176,14 +182,20 @@ void BehaviorPlanner::timerCallback() {
             double dist_actual = result.dist_actual;
             double ego_v = result.ego_v;
             
-            if (((object_x >= ego_x) && (distance <= limit)) || (ttc < 2.0 && closing_speed > 0.5)) {
-                relevant_obstacles.push_back(current_object);
+            if ((distance <= limit) || (ttc < 2.0 && closing_speed > 0.5)) {
+                relevant_objects.push_back(current_object);
                 
-                RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %.2f m, closing_speed: %.2f m/s", object_x, object_y, dist_actual, closing_speed);
-                RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f, ego_speed: %.2f m/s", ego_x, ego_y, ego_v);
+                if (debugEnabled) {
+                    RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %.2f m, closing_speed: %.2f m/s", object_x, object_y, dist_actual, closing_speed);
+                    RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f, ego_speed: %.2f m/s", ego_x, ego_y, ego_v);
+                }
             }
         }
     
+        if (debugEnabled) {
+            RCLCPP_INFO(this->get_logger(), "Len of obstacles: %d", relevant_obstacles.size());
+            RCLCPP_INFO(this->get_logger(), "Len of objects: %d", relevant_objects.size()); 
+        }
         out_targetSpace.relevant_obstacles = relevant_obstacles;
         out_targetSpace.relevant_objects = relevant_objects;
 

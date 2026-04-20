@@ -105,13 +105,12 @@
             closing_speed = rel_vx * dir_x + rel_vy * dir_y;
         }
                     
-        double dist_actual = std::sqrt(distance);
-        double ttc = (closing_speed > 0.1) ? dist_actual / closing_speed : 1e6;
+        double ttc = (closing_speed > 0.1) ? distance / closing_speed : 1e6;
 
         Result result;
         result.ttc = ttc;
         result.closing_speed = closing_speed;
-        result.dist_actual = dist_actual;
+        result.dist_actual = distance;
         result.ego_v = ego_v;
         
 
