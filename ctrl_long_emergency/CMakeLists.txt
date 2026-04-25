@@ -14,17 +14,12 @@ find_package(crp_msgs REQUIRED)
 
 include_directories(include)
 
-add_executable(ctrl_long_emergency src/ctrlLongEmergency.cpp)
-ament_target_dependencies(ctrl_long_emergency rclcpp autoware_control_msgs crp_msgs)
+add_executable(ctrl_long_emergency_node src/ctrlLongEmergency.cpp)
+ament_target_dependencies(ctrl_long_emergency_node rclcpp autoware_control_msgs crp_msgs)
 
 install(TARGETS
-  ctrl_long_emergency
+  ctrl_long_emergency_node
   DESTINATION lib/${PROJECT_NAME}
-)
-
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}
 )
 
 ament_package()

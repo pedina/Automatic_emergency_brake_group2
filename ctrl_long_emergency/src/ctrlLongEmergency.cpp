@@ -36,7 +36,7 @@ void cle::CtrlLongEmergency::trajectoryCallback(const autoware_planning_msgs::ms
     this->get_parameter<bool>("debug_enabled", isDebugEnabled);
 
     if (isDebugEnabled)
-        RCLCPP_INFO(this->get_logger(), "Received trajectory message! Time: %d, Velocity: %f, Time from start: %d", 
+        RCLCPP_INFO(this->get_logger(), "Received trajectory message! Time: %d, Velocity: %f, Time from start: %ld", 
             msg->header.stamp.sec, m_trajectoryVelocity, m_trajectoryTime);
 }
 
