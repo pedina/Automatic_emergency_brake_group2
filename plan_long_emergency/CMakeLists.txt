@@ -18,11 +18,6 @@ find_package(autoware_perception_msgs REQUIRED)
 
 add_executable(plan_long_emergency_node src/planLongEmergencyUpgraded.cpp)
 
-target_include_directories(plan_long_emergency_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
-
 ament_target_dependencies(plan_long_emergency_node
   rclcpp
   std_msgs
@@ -37,6 +32,10 @@ ament_target_dependencies(plan_long_emergency_node
 install(TARGETS
   plan_long_emergency_node
   DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)

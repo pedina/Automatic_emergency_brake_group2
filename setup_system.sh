@@ -21,4 +21,4 @@ source install/setup.bash
 
 echo "=== SIKER! Indul a Launch! ==="
 # 4. Automatikus indítás!
-ros2 launch --launch-directory ~/ros2_ws/src/Automatic_emergency_brake_group2 system_launch.py
+ros2 launch plan_long_emergency system_launch.py
