@@ -1,0 +1,8 @@
+.vscode/
+**/browse.vc.db
+**/ipch/
+build/
+install/
+log/
+*.pyc
+__pycache__/
