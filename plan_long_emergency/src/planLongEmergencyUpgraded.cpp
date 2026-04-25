@@ -148,6 +148,31 @@ private:
         double min_ttc = std::numeric_limits<double>::infinity();
         double target_distance_at_min_ttc = 0.0;
 
+
+        if (last_target_->relevant_objects.empty()) {
+            // Nincs veszély - egyenes pályán haladás (tartjuk az aktuális sebességet)
+            double dt = 0.1;
+            double curr_v = v_ego;
+            double curr_s = 0.0;
+            
+            for (double t = 0; t <= predictionHorizon; t += dt) {
+                autoware_planning_msgs::msg::TrajectoryPoint p;
+                curr_s += curr_v * dt;
+                
+                p.longitudinal_velocity_mps = static_cast<float>(curr_v);
+                p.acceleration_mps2 = 0.0f;  // Nincsen gyorsulás/lassítás
+                p.pose.position.x = ego_x + curr_s;
+                p.pose.position.y = ego_y;
+                p.time_from_start.sec = static_cast<int32_t>(t);
+                p.time_from_start.nanosec = static_cast<uint32_t>((t - std::floor(t)) * 1e9);
+                
+                traj.points.push_back(p);
+            }
+            
+            return traj;
+        }
+
+
         // 1. Legkisebb TTC-jű objektum megkeresése!
         for (const auto& obj : last_target_->relevant_objects) {
             double tx = obj.kinematics.initial_pose_with_covariance.pose.position.x;
