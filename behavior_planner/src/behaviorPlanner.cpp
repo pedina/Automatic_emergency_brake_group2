@@ -126,7 +126,7 @@ void BehaviorPlanner::timerCallback() {
  
     double ego_x = last_ego->pose.pose.position.x;
     double ego_y = last_ego->pose.pose.position.y;
-    double ego_vx = last_ego->accel.accel.linear.x;
+    double ego_vx = last_ego->twist.twist.linear.x;
  
     obstacles = working_scenario->local_obstacles.objects;
     objects   = working_scenario->local_moving_objects.objects;

@@ -167,29 +167,8 @@ private:
                 target_distance_at_min_ttc = distance;
             }
         }
-
-        // 2. Szükséges gyorsulás meghatározása
-        double a_req = 0.0; // Alapértelmezett: tartjuk a sebességet
-
-        // Ha van veszély (TTC kisebb, mint a predikciós horizont)
-        if (min_ttc < predictionHorizon) {
-            double safetyDistance = this->get_parameter("safety_distance").as_double();
-            double s_stop = std::max(0.1, target_distance_at_min_ttc - safetyDistance);
-
-            // Mekkora lassulás kell, hogy megálljunk s_stop távolságon belül?
-            a_req = -(v_ego * v_ego) / (2.0 * s_stop);
-
-            // Lassulás korlátozása a Behavior node által megadott maximális értékre (vészfék limit)
-            if (a_req < -lims.max_accel) {
-                a_req = -lims.max_accel;
-            }
-
-            if (this->get_parameter("debug_enabled").as_bool()) {
-                RCLCPP_WARN(this->get_logger(), 
-                    "VESZELY! TTC: %.2fs. Lassulas: %.2f m/s2", min_ttc, a_req);
-            }
-        }
-
+        RCLCPP_INFO(this->get_logger(), "Legkisebb TTC: %.2fs, Távolság ennél: %.2fm", min_ttc, target_distance_at_min_ttc);
+        
         // Trajektória felépítése (1 pont)
         double targetSpeed = 0.0;
 

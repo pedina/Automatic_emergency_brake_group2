@@ -56,7 +56,17 @@ void cle::CtrlLongEmergency::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg
 
 void cle::CtrlLongEmergency::timerCallback()
 {
-    if (!(m_egoVelocity && m_trajectoryVelocity))
+    if (!m_egoVelocity) {
+        RCLCPP_INFO(this->get_logger(), "No ego");
+        return;
+    }
+
+    if (!m_trajectoryVelocity && m_trajectoryVelocity != 0) {
+        RCLCPP_INFO(this->get_logger(), "No velo");
+        return;
+    }
+
+    if (!(m_trajectoryTime > 0.0))
         return;
     
     // create message and init with current time
