@@ -127,7 +127,8 @@ private:
 
         // Generáljuk és publikáljuk a trajektóriát a jelenlegi limit alapján
         auto trajectory = generateTrajectory(mode_limits_[mode]);
-        pub_trajectory_->publish(trajectory);
+        if (trajectory.points[0].time_from_start.sec >= 0)
+            pub_trajectory_->publish(trajectory);
     }
 
     // --- TRAJEKTÓRIA GENERÁLÁS (Kombinált logika) ---
@@ -139,11 +140,8 @@ private:
 
         double predictionHorizon = this->get_parameter("prediction_horizon").as_double();
 
-        // Ego sebesség
         double v_ego = last_ego_->twist.twist.linear.x;
         double a_ego = last_ego_->accel.accel.linear.x;
-        double ego_x = last_ego_->pose.pose.position.x;
-        double ego_y = last_ego_->pose.pose.position.y;
 
         double min_ttc = std::numeric_limits<double>::infinity();
         double target_distance_at_min_ttc = 0.0;
@@ -152,11 +150,15 @@ private:
         for (const auto& obj : last_target_->relevant_objects) {
             double tx = obj.kinematics.initial_pose_with_covariance.pose.position.x;
             double ty = obj.kinematics.initial_pose_with_covariance.pose.position.y;
-            double distance = std::hypot(tx - ego_x, ty - ego_y); // Vektoros távolság
+            double distance = std::hypot(tx, ty); // Vektoros távolság
 
             // Csak X irányú (hosszirányú) mozgást nézünk a ráfutásos balesetekhez
             double v_target = obj.kinematics.initial_twist_with_covariance.twist.linear.x;
             double a_target = obj.kinematics.initial_acceleration_with_covariance.accel.linear.x;
+
+            
+            RCLCPP_INFO(this->get_logger(), "Pozíció: (%.2f, %.2f), Sebesség: %.2f m/s, Gyorsulás: %.2f m/s2",
+                tx, ty, v_target, a_target);
 
             auto ttc_opt = calculate_universal_ttc(distance, v_ego, a_ego, v_target, a_target);
 
@@ -183,36 +185,21 @@ private:
             }
 
             if (this->get_parameter("debug_enabled").as_bool()) {
-                RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 500,
+                RCLCPP_WARN(this->get_logger(), 
                     "VESZELY! TTC: %.2fs. Lassulas: %.2f m/s2", min_ttc, a_req);
             }
         }
 
-        // 3. Trajektória felépítése pontról pontra (kinematikai modell)
-        double dt = 0.1;
-        double curr_v = v_ego;
-        double curr_s = 0.0;
+        // Trajektória felépítése (1 pont)
+        double targetSpeed = 0.0;
 
-        for (double t = 0; t <= predictionHorizon; t += dt) {
-            autoware_planning_msgs::msg::TrajectoryPoint p;
+        autoware_planning_msgs::msg::TrajectoryPoint p;
 
-            curr_v += a_req * dt;
-            if (curr_v < 0) curr_v = 0.0; // Nem tolatunk vészfékezés után!
-            curr_s += curr_v * dt;
+        p.longitudinal_velocity_mps = targetSpeed;
+        p.time_from_start.sec = static_cast<int32_t>(min_ttc);
+        p.time_from_start.nanosec = static_cast<uint32_t>((min_ttc - std::floor(min_ttc)) * 1e9);
 
-            p.longitudinal_velocity_mps = static_cast<float>(curr_v);
-            p.acceleration_mps2 = static_cast<float>(a_req);
-            // Egyszerű egyenes vonalú mozgást feltételezünk a példa kedvéért
-            p.pose.position.x = ego_x + curr_s;
-            p.pose.position.y = ego_y;
-            p.time_from_start.sec = static_cast<int32_t>(t);
-            p.time_from_start.nanosec = static_cast<uint32_t>((t - std::floor(t)) * 1e9);
-
-            traj.points.push_back(p);
-
-            // Ha megálltunk, nem kell tovább számolni a jövőt
-            if (curr_v <= 0.0) break;
-        }
+        traj.points.push_back(p);
 
         return traj;
     }

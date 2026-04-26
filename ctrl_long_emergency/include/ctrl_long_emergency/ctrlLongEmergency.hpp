@@ -28,7 +28,9 @@ private:
 
     // values coming from trajectory msg
     double m_trajectoryVelocity;
-    long m_trajectoryTime;
+    int32_t m_trajectoryTimeSec;
+    uint32_t m_trajectoryTimeNanosec;
+    double m_trajectoryTime;
 
     // values coming from ego msg
     double m_egoVelocity;
