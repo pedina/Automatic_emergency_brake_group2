@@ -32,7 +32,7 @@ public:
         this->declare_parameter<std::string>("target_topic", "plan/target_space");
         this->declare_parameter<std::string>("behavior_topic", "plan/strategy_behavior");
         this->declare_parameter<std::string>("output_topic", "plan/longEmergency/trajectory");
-        this->declare_parameter<bool>("debug_enabled", true);
+        this->declare_parameter<bool>("debug_enabled", false);
 
         // Paraméterek beolvasása
         std::string egoTopic = this->get_parameter("ego_topic").as_string();
@@ -78,7 +78,7 @@ public:
         timer_ = this->create_wall_timer(
             std::chrono::duration<float>(1.0f / 50.0f), std::bind(&PlanLongEmergency::onTimer, this));
 
-        RCLCPP_INFO(this->get_logger(), "PlanLongEmergency node sikeresen elindult az uj TTC logikaval!");
+        RCLCPP_INFO(this->get_logger(), "plan_long_emergency node has been started");
     }
 
 private:
@@ -120,30 +120,24 @@ private:
     {
         if (!last_ego_ || !last_target_) return; // Védvonal: Ha nincs adat, ne csináljunk semmit
 
-        uint8_t mode = 1; // Alapértelmezett mód
-        if (current_behavior_ && mode_limits_.find(current_behavior_->deceleration_mode.data) != mode_limits_.end()) {
-            mode = current_behavior_->deceleration_mode.data;
-        }
-
         // Generáljuk és publikáljuk a trajektóriát a jelenlegi limit alapján
-        auto trajectory = generateTrajectory(mode_limits_[mode]);
-        pub_trajectory_->publish(trajectory);
+        auto trajectory = generateTrajectory();
+        if (trajectory.points[0].time_from_start.sec >= 0)
+            pub_trajectory_->publish(trajectory);
     }
 
     // --- TRAJEKTÓRIA GENERÁLÁS (Kombinált logika) ---
-    autoware_planning_msgs::msg::Trajectory generateTrajectory(SafetyLimits lims)
+    autoware_planning_msgs::msg::Trajectory generateTrajectory()
     {
+        bool isDebugEnabled;
+        this->get_parameter<bool>("debug_enabled", isDebugEnabled);
+
         autoware_planning_msgs::msg::Trajectory traj;
         traj.header.stamp = this->now();
         traj.header.frame_id = "map";
 
-        double predictionHorizon = this->get_parameter("prediction_horizon").as_double();
-
-        // Ego sebesség
         double v_ego = last_ego_->twist.twist.linear.x;
         double a_ego = last_ego_->accel.accel.linear.x;
-        double ego_x = last_ego_->pose.pose.position.x;
-        double ego_y = last_ego_->pose.pose.position.y;
 
         double min_ttc = std::numeric_limits<double>::infinity();
         double target_distance_at_min_ttc = 0.0;
@@ -177,11 +171,16 @@ private:
         for (const auto& obj : last_target_->relevant_objects) {
             double tx = obj.kinematics.initial_pose_with_covariance.pose.position.x;
             double ty = obj.kinematics.initial_pose_with_covariance.pose.position.y;
-            double distance = std::hypot(tx - ego_x, ty - ego_y); // Vektoros távolság
+            double distance = std::hypot(tx, ty); // Vektoros távolság
 
             // Csak X irányú (hosszirányú) mozgást nézünk a ráfutásos balesetekhez
             double v_target = obj.kinematics.initial_twist_with_covariance.twist.linear.x;
             double a_target = obj.kinematics.initial_acceleration_with_covariance.accel.linear.x;
+
+            if (isDebugEnabled) {
+                RCLCPP_INFO(this->get_logger(), "Pozíció: (%.2f, %.2f), Sebesség: %.2f m/s, Gyorsulás: %.2f m/s2",
+                    tx, ty, v_target, a_target);
+            }
 
             auto ttc_opt = calculate_universal_ttc(distance, v_ego, a_ego, v_target, a_target);
 
@@ -191,53 +190,21 @@ private:
             }
         }
 
-        // 2. Szükséges gyorsulás meghatározása
-        double a_req = 0.0; // Alapértelmezett: tartjuk a sebességet
+        if (isDebugEnabled)
+            RCLCPP_INFO(this->get_logger(), "Legkisebb TTC: %.2fs, Távolság ennél: %.2fm", min_ttc, target_distance_at_min_ttc);
+        
+        // Trajektória felépítése (1 pont)
+        double targetSpeed = 0.0;
 
-        // Ha van veszély (TTC kisebb, mint a predikciós horizont)
-        if (min_ttc < predictionHorizon) {
-            double safetyDistance = this->get_parameter("safety_distance").as_double();
-            double s_stop = std::max(0.1, target_distance_at_min_ttc - safetyDistance);
+        double timeToStop = min_ttc;
 
-            // Mekkora lassulás kell, hogy megálljunk s_stop távolságon belül?
-            a_req = -(v_ego * v_ego) / (2.0 * s_stop);
+        autoware_planning_msgs::msg::TrajectoryPoint p;
 
-            // Lassulás korlátozása a Behavior node által megadott maximális értékre (vészfék limit)
-            if (a_req < -lims.max_accel) {
-                a_req = -lims.max_accel;
-            }
+        p.longitudinal_velocity_mps = targetSpeed;
+        p.time_from_start.sec = static_cast<int32_t>(timeToStop);
+        p.time_from_start.nanosec = static_cast<uint32_t>((timeToStop - std::floor(timeToStop)) * 1e9);
 
-            if (this->get_parameter("debug_enabled").as_bool()) {
-                RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 500,
-                    "VESZELY! TTC: %.2fs. Lassulas: %.2f m/s2", min_ttc, a_req);
-            }
-        }
-
-        // 3. Trajektória felépítése pontról pontra (kinematikai modell)
-        double dt = 0.1;
-        double curr_v = v_ego;
-        double curr_s = 0.0;
-
-        for (double t = 0; t <= predictionHorizon; t += dt) {
-            autoware_planning_msgs::msg::TrajectoryPoint p;
-
-            curr_v += a_req * dt;
-            if (curr_v < 0) curr_v = 0.0; // Nem tolatunk vészfékezés után!
-            curr_s += curr_v * dt;
-
-            p.longitudinal_velocity_mps = static_cast<float>(curr_v);
-            p.acceleration_mps2 = static_cast<float>(a_req);
-            // Egyszerű egyenes vonalú mozgást feltételezünk a példa kedvéért
-            p.pose.position.x = ego_x + curr_s;
-            p.pose.position.y = ego_y;
-            p.time_from_start.sec = static_cast<int32_t>(t);
-            p.time_from_start.nanosec = static_cast<uint32_t>((t - std::floor(t)) * 1e9);
-
-            traj.points.push_back(p);
-
-            // Ha megálltunk, nem kell tovább számolni a jövőt
-            if (curr_v <= 0.0) break;
-        }
+        traj.points.push_back(p);
 
         return traj;
     }

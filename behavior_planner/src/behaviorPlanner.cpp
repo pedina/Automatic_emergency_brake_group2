@@ -126,7 +126,7 @@ void BehaviorPlanner::timerCallback() {
  
     double ego_x = last_ego->pose.pose.position.x;
     double ego_y = last_ego->pose.pose.position.y;
-    double ego_vx = last_ego->accel.accel.linear.x;
+    double ego_vx = last_ego->twist.twist.linear.x;
  
     obstacles = working_scenario->local_obstacles.objects;
     objects   = working_scenario->local_moving_objects.objects;
@@ -193,8 +193,8 @@ void BehaviorPlanner::timerCallback() {
         }
     
         if (debugEnabled) {
-            RCLCPP_INFO(this->get_logger(), "Len of obstacles: %d", relevant_obstacles.size());
-            RCLCPP_INFO(this->get_logger(), "Len of objects: %d", relevant_objects.size()); 
+            RCLCPP_INFO(this->get_logger(), "Len of obstacles: %ld", relevant_obstacles.size());
+            RCLCPP_INFO(this->get_logger(), "Len of objects: %ld", relevant_objects.size()); 
         }
         out_targetSpace.relevant_obstacles = relevant_obstacles;
         out_targetSpace.relevant_objects = relevant_objects;
