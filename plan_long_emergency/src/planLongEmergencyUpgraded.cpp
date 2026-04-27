@@ -32,7 +32,7 @@ public:
         this->declare_parameter<std::string>("target_topic", "plan/target_space");
         this->declare_parameter<std::string>("behavior_topic", "plan/strategy_behavior");
         this->declare_parameter<std::string>("output_topic", "plan/longEmergency/trajectory");
-        this->declare_parameter<bool>("debug_enabled", true);
+        this->declare_parameter<bool>("debug_enabled", false);
 
         // Paraméterek beolvasása
         std::string egoTopic = this->get_parameter("ego_topic").as_string();
@@ -78,7 +78,7 @@ public:
         timer_ = this->create_wall_timer(
             std::chrono::duration<float>(1.0f / 50.0f), std::bind(&PlanLongEmergency::onTimer, this));
 
-        RCLCPP_INFO(this->get_logger(), "PlanLongEmergency node sikeresen elindult az uj TTC logikaval!");
+        RCLCPP_INFO(this->get_logger(), "plan_long_emergency node has been started");
     }
 
 private:
@@ -120,25 +120,21 @@ private:
     {
         if (!last_ego_ || !last_target_) return; // Védvonal: Ha nincs adat, ne csináljunk semmit
 
-        uint8_t mode = 1; // Alapértelmezett mód
-        if (current_behavior_ && mode_limits_.find(current_behavior_->deceleration_mode.data) != mode_limits_.end()) {
-            mode = current_behavior_->deceleration_mode.data;
-        }
-
         // Generáljuk és publikáljuk a trajektóriát a jelenlegi limit alapján
-        auto trajectory = generateTrajectory(mode_limits_[mode]);
+        auto trajectory = generateTrajectory();
         if (trajectory.points[0].time_from_start.sec >= 0)
             pub_trajectory_->publish(trajectory);
     }
 
     // --- TRAJEKTÓRIA GENERÁLÁS (Kombinált logika) ---
-    autoware_planning_msgs::msg::Trajectory generateTrajectory(SafetyLimits lims)
+    autoware_planning_msgs::msg::Trajectory generateTrajectory()
     {
+        bool isDebugEnabled;
+        this->get_parameter<bool>("debug_enabled", isDebugEnabled);
+
         autoware_planning_msgs::msg::Trajectory traj;
         traj.header.stamp = this->now();
         traj.header.frame_id = "map";
-
-        double predictionHorizon = this->get_parameter("prediction_horizon").as_double();
 
         double v_ego = last_ego_->twist.twist.linear.x;
         double a_ego = last_ego_->accel.accel.linear.x;
@@ -156,9 +152,10 @@ private:
             double v_target = obj.kinematics.initial_twist_with_covariance.twist.linear.x;
             double a_target = obj.kinematics.initial_acceleration_with_covariance.accel.linear.x;
 
-            
-            RCLCPP_INFO(this->get_logger(), "Pozíció: (%.2f, %.2f), Sebesség: %.2f m/s, Gyorsulás: %.2f m/s2",
-                tx, ty, v_target, a_target);
+            if (isDebugEnabled) {
+                RCLCPP_INFO(this->get_logger(), "Pozíció: (%.2f, %.2f), Sebesség: %.2f m/s, Gyorsulás: %.2f m/s2",
+                    tx, ty, v_target, a_target);
+            }
 
             auto ttc_opt = calculate_universal_ttc(distance, v_ego, a_ego, v_target, a_target);
 
@@ -167,16 +164,20 @@ private:
                 target_distance_at_min_ttc = distance;
             }
         }
-        RCLCPP_INFO(this->get_logger(), "Legkisebb TTC: %.2fs, Távolság ennél: %.2fm", min_ttc, target_distance_at_min_ttc);
+
+        if (isDebugEnabled)
+            RCLCPP_INFO(this->get_logger(), "Legkisebb TTC: %.2fs, Távolság ennél: %.2fm", min_ttc, target_distance_at_min_ttc);
         
         // Trajektória felépítése (1 pont)
         double targetSpeed = 0.0;
 
+        double timeToStop = min_ttc;
+
         autoware_planning_msgs::msg::TrajectoryPoint p;
 
         p.longitudinal_velocity_mps = targetSpeed;
-        p.time_from_start.sec = static_cast<int32_t>(min_ttc);
-        p.time_from_start.nanosec = static_cast<uint32_t>((min_ttc - std::floor(min_ttc)) * 1e9);
+        p.time_from_start.sec = static_cast<int32_t>(timeToStop);
+        p.time_from_start.nanosec = static_cast<uint32_t>((timeToStop - std::floor(timeToStop)) * 1e9);
 
         traj.points.push_back(p);
 

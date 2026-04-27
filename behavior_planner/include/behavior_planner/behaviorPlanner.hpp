@@ -90,19 +90,14 @@
 
         double object_x = object.kinematics.initial_pose_with_covariance.pose.position.x;
         double object_y = object.kinematics.initial_pose_with_covariance.pose.position.y;
-
-        double ego_x = ego->pose.pose.position.x;
-        double ego_y = ego->pose.pose.position.y;
                     
-        double dir_x = object_x - ego_x;
-        double dir_y = object_y - ego_y;
-        double dir_len = std::sqrt(dir_x*dir_x + dir_y*dir_y);
+        double dir_len = std::sqrt(object_x*object_x + object_y*object_y);
                     
         double closing_speed = 0.0;
         if (dir_len > 0.001) {
-            dir_x /= dir_len;
-            dir_y /= dir_len;
-            closing_speed = rel_vx * dir_x + rel_vy * dir_y;
+            object_x /= dir_len;
+            object_y /= dir_len;
+            closing_speed = rel_vx * object_x + rel_vy * object_y;
         }
                     
         double ttc = (closing_speed > 0.1) ? distance / closing_speed : 1e6;

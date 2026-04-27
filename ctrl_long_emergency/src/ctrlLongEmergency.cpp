@@ -23,7 +23,7 @@ cle::CtrlLongEmergency::CtrlLongEmergency() : Node("control_publisher")
         std::bind(&CtrlLongEmergency::timerCallback, this)
     );
 
-    RCLCPP_INFO(this->get_logger(), "control_publisher node has been started");
+    RCLCPP_INFO(this->get_logger(), "ctrl_long_emergency node has been started");
 }
 
 void cle::CtrlLongEmergency::trajectoryCallback(const autoware_planning_msgs::msg::Trajectory::SharedPtr msg)
@@ -56,30 +56,38 @@ void cle::CtrlLongEmergency::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg
 
 void cle::CtrlLongEmergency::timerCallback()
 {
+    // read debug param
+    bool isDebugEnabled;
+    this->get_parameter<bool>("debug_enabled", isDebugEnabled);
+
     if (!m_egoVelocity) {
-        RCLCPP_INFO(this->get_logger(), "No ego");
+        if (isDebugEnabled)
+            RCLCPP_INFO(this->get_logger(), "No ego");
         return;
     }
 
     if (!m_trajectoryVelocity && m_trajectoryVelocity != 0) {
-        RCLCPP_INFO(this->get_logger(), "No velo");
+        if (isDebugEnabled)
+            RCLCPP_INFO(this->get_logger(), "No velo");
         return;
     }
 
-    if (!(m_trajectoryTime > 0.0))
+    if (!(m_trajectoryTime > 0.0) || m_trajectoryTime > 4.0)
         return;
     
-    // create message and init with current time
+    // create message
     autoware_control_msgs::msg::Control controlMsg;
     controlMsg.stamp = this->get_clock()->now();
 
-    // TODO: target speed calculation for the next 20ms
     double cycleTimeSec = 0.02; // 20 ms
     double cycles = m_trajectoryTime / cycleTimeSec;
 
     double speedPerCycle = (m_egoVelocity - m_trajectoryVelocity) / cycles;
 
     double targetSpeed = m_egoVelocity - speedPerCycle;
+
+    if (targetSpeed < 0.0)
+        targetSpeed = 0.0;
 
     controlMsg.longitudinal.velocity = targetSpeed;
 
@@ -88,10 +96,6 @@ void cle::CtrlLongEmergency::timerCallback()
         return;
 
     m_pubControl_->publish(controlMsg);
-
-    // read debug param
-    bool isDebugEnabled;
-    this->get_parameter<bool>("debug_enabled", isDebugEnabled);
 
     if (isDebugEnabled)
         RCLCPP_INFO(this->get_logger(), "Control message has been published! Time: %d, Target Velocity: %f", controlMsg.stamp.sec, controlMsg.longitudinal.velocity );
