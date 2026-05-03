@@ -110,23 +110,23 @@ private:
         return t;
     }
 
-    // --- CALLBACKEK ---
     void egoCallback(const crp_msgs::msg::Ego::SharedPtr msg) { last_ego_ = msg; }
     void targetCallback(const crp_msgs::msg::TargetSpace::SharedPtr msg) { last_target_ = msg; }
     void behaviorCallback(const crp_msgs::msg::Behavior::SharedPtr msg) { current_behavior_ = msg; }
 
-    // --- FŐ LOGIKAI CIKLUS ---
     void onTimer()
     {
         if (!last_ego_ || !last_target_) return; // Védvonal: Ha nincs adat, ne csináljunk semmit
 
-        // Generáljuk és publikáljuk a trajektóriát a jelenlegi limit alapján
+        if (last_target_->relevant_objects.empty()) return;
+
         auto trajectory = generateTrajectory();
-        if (trajectory.points[0].time_from_start.sec >= 0)
-            pub_trajectory_->publish(trajectory);
+
+        if (trajectory.points.empty()) return;
+
+        pub_trajectory_->publish(trajectory);
     }
 
-    // --- TRAJEKTÓRIA GENERÁLÁS (Kombinált logika) ---
     autoware_planning_msgs::msg::Trajectory generateTrajectory()
     {
         bool isDebugEnabled;
@@ -142,13 +142,11 @@ private:
         double min_ttc = std::numeric_limits<double>::infinity();
         double target_distance_at_min_ttc = 0.0;
 
-        // 1. Legkisebb TTC-jű objektum megkeresése!
         for (const auto& obj : last_target_->relevant_objects) {
             double tx = obj.kinematics.initial_pose_with_covariance.pose.position.x;
             double ty = obj.kinematics.initial_pose_with_covariance.pose.position.y;
             double distance = std::hypot(tx, ty); // Vektoros távolság
 
-            // Csak X irányú (hosszirányú) mozgást nézünk a ráfutásos balesetekhez
             double v_target = obj.kinematics.initial_twist_with_covariance.twist.linear.x;
             double a_target = obj.kinematics.initial_acceleration_with_covariance.accel.linear.x;
 
@@ -167,14 +165,14 @@ private:
 
         if (isDebugEnabled)
             RCLCPP_INFO(this->get_logger(), "Legkisebb TTC: %.2fs, Távolság ennél: %.2fm", min_ttc, target_distance_at_min_ttc);
-        
-        // Trajektória felépítése (1 pont)
-        double targetSpeed = 0.0;
 
+        if (min_ttc == std::numeric_limits<double>::infinity())
+            return traj;
+
+        double targetSpeed = 0.0;
         double timeToStop = min_ttc;
 
         autoware_planning_msgs::msg::TrajectoryPoint p;
-
         p.longitudinal_velocity_mps = targetSpeed;
         p.time_from_start.sec = static_cast<int32_t>(timeToStop);
         p.time_from_start.nanosec = static_cast<uint32_t>((timeToStop - std::floor(timeToStop)) * 1e9);
