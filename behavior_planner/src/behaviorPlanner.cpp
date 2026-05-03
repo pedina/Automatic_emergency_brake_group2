@@ -122,16 +122,13 @@ void BehaviorPlanner::timerCallback() {
         pub_targetSpace->publish(empty_msg);
         return;
     }
-
- 
-    double ego_x = last_ego->pose.pose.position.x;
-    double ego_y = last_ego->pose.pose.position.y;
-    double ego_vx = last_ego->twist.twist.linear.x;
  
     obstacles = working_scenario->local_obstacles.objects;
     objects   = working_scenario->local_moving_objects.objects;
     relevant_obstacles.clear();
     relevant_objects.clear();
+
+    auto paths = working_scenario->paths;
  
     out_targetSpace.free_space   = working_scenario->free_space;
     out_targetSpace.header.stamp = this->get_clock()->now();
@@ -144,9 +141,6 @@ void BehaviorPlanner::timerCallback() {
             double obstacle_x = current_obstacle.kinematics.initial_pose_with_covariance.pose.position.x;
             double obstacle_y = current_obstacle.kinematics.initial_pose_with_covariance.pose.position.y;
 
-            if (obstacle_x < 0.0 && ego_vx > 0.0) continue;
-            if (obstacle_x > 0.0 && ego_vx < 0.0) continue;
-
             double distance = std::sqrt(obstacle_x * obstacle_x + obstacle_y * obstacle_y);
 
             Result result = calcTTC(last_ego, current_obstacle, distance);
@@ -156,11 +150,12 @@ void BehaviorPlanner::timerCallback() {
             double ego_v = result.ego_v; 
             
             if ((distance <= limit) || (ttc < 2.0 && closing_speed > 0.5)) {
-                relevant_obstacles.push_back(current_obstacle);
-                
-                if (debugEnabled) {
-                    RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %.2f m, closing_speed: %.2f m/s", obstacle_x, obstacle_y, dist_actual, closing_speed);
-                    RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f, ego_speed: %.2f m/s", ego_x, ego_y, ego_v);
+                if (std::abs(obstacle_y) < 3.5) {
+                    relevant_obstacles.push_back(current_obstacle);
+
+                    if (debugEnabled) {
+                        RCLCPP_INFO(this->get_logger(), "New obstacle added to relevant pool!");
+                    }
                 }
             }
         }
@@ -171,9 +166,6 @@ void BehaviorPlanner::timerCallback() {
             double object_x = current_object.kinematics.initial_pose_with_covariance.pose.position.x;
             double object_y = current_object.kinematics.initial_pose_with_covariance.pose.position.y;
 
-            if (object_x < 0.0 && ego_vx > 0.0) continue;
-            if (object_x > 0.0 && ego_vx < 0.0) continue;
-
             double distance = std::sqrt(object_x * object_x + object_y * object_y);
 
             Result result = calcTTC(last_ego, current_object, distance);
@@ -183,11 +175,12 @@ void BehaviorPlanner::timerCallback() {
             double ego_v = result.ego_v;
             
             if ((distance <= limit) || (ttc < 2.0 && closing_speed > 0.5)) {
-                relevant_objects.push_back(current_object);
-                
-                if (debugEnabled) {
-                    RCLCPP_INFO(this->get_logger(), "New obstacle, x: %f y: %f distance: %.2f m, closing_speed: %.2f m/s", object_x, object_y, dist_actual, closing_speed);
-                    RCLCPP_INFO(this->get_logger(), "Ego's,        x: %f y: %f, ego_speed: %.2f m/s", ego_x, ego_y, ego_v);
+                if (std::abs(object_y) < 3.5) {
+                    relevant_objects.push_back(current_object);
+
+                    if (debugEnabled) {
+                        RCLCPP_INFO(this->get_logger(), "New obstacle added to relevant pool!");
+                    }
                 }
             }
         }
