@@ -72,14 +72,14 @@ void cle::CtrlLongEmergency::timerCallback()
         return;
     }
 
-    if (!(m_trajectoryTime > 0.0) || m_trajectoryTime > 4.0)
+    if (!(m_trajectoryTime > 0.0) || m_trajectoryTime > 2.5)
         return;
     
     // create message
     autoware_control_msgs::msg::Control controlMsg;
     controlMsg.stamp = this->get_clock()->now();
 
-    double cycleTimeSec = 0.02; // 20 ms
+    double cycleTimeSec = 0.5; // 20 ms
     double cycles = m_trajectoryTime / cycleTimeSec;
 
     double speedPerCycle = (m_egoVelocity - m_trajectoryVelocity) / cycles;
